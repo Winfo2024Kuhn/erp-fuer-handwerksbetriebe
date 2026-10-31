@@ -734,6 +734,35 @@ p {
   color: var(--ink);
 }
 
+.voice {
+  margin: 32px 0 0;
+  max-width: 52ch;
+  padding-left: 20px;
+  border-left: 3px solid var(--rose);
+}
+
+.voice blockquote {
+  margin: 0;
+}
+
+.voice blockquote p {
+  margin: 0;
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.voice figcaption {
+  margin-top: 10px;
+  color: var(--ink-2);
+  font-size: 14px;
+}
+
+.voice a {
+  font-weight: 600;
+  text-underline-offset: 3px;
+}
+
 /* Einrichtung */
 .steps {
   display: grid;

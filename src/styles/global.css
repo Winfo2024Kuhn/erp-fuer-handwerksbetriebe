@@ -16,7 +16,6 @@
   --rose-soft: #fff1f2; /* rose-50 */
   --rose-100: #ffe4e6;
   --rose-200: #fecdd3;
-  --rose-glow: 0 10px 40px -10px rgb(225 29 72 / 0.45);
 
   --font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
@@ -27,6 +26,9 @@
   --gutter: clamp(20px, 4vw, 32px);
 
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+
+  /* Überschrift eines Blocks innerhalb eines Abschnitts (Funktionen, EN 1090, Einrichtung) */
+  --fs-h3: clamp(1.6rem, 2.6vw, 2.1rem);
 }
 
 *,
@@ -62,6 +64,16 @@ video {
 
 a {
   color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  text-decoration-color: var(--rose-200);
+  transition: color 160ms ease, text-decoration-color 160ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  a:hover {
+    text-decoration-color: currentColor;
+  }
 }
 
 h1,
@@ -199,9 +211,8 @@ p {
 }
 
 .btn-light {
-  background: var(--surface);
+  background: var(--rose-soft);
   color: var(--rose-dark);
-  box-shadow: inset 0 0 0 1px var(--rose-200);
 }
 
 .btn-rose {
@@ -209,16 +220,12 @@ p {
   color: #fff;
 }
 
-.btn-l.btn-rose {
-  box-shadow: var(--rose-glow);
-}
-
 @media (hover: hover) and (pointer: fine) {
   .btn-dark:hover {
     background: #1e293b;
   }
   .btn-light:hover {
-    background: var(--rose-soft);
+    background: var(--rose-100);
   }
   .btn-rose:hover {
     background: var(--rose-dark);
@@ -302,9 +309,6 @@ p {
 }
 
 .hero .version a {
-  color: inherit;
-  text-decoration: underline;
-  text-underline-offset: 3px;
   white-space: nowrap;
 }
 
@@ -488,21 +492,6 @@ p {
   max-width: 44rem;
 }
 
-.section-head.center {
-  margin-inline: auto;
-  text-align: center;
-}
-
-.eyebrow,
-.section-head .eyebrow {
-  margin: 0 0 12px;
-  color: var(--rose-dark);
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
 .section h2 {
   font-size: clamp(2rem, 4.2vw, 3.25rem);
 }
@@ -532,7 +521,8 @@ p {
 }
 
 .feature h3 {
-  font-size: clamp(1.6rem, 2.8vw, 2.25rem);
+  font-size: var(--fs-h3);
+  line-height: 1.15;
 }
 
 .feature-text p {
@@ -540,27 +530,37 @@ p {
   color: var(--ink-2);
 }
 
-.feature-text ul {
-  margin: 20px 0 0;
+/* Listen mit Haken: überall dieselbe Form (Funktionen, EN 1090, Einrichtung) */
+.checks {
+  display: grid;
+  gap: 12px;
+  margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.feature-text li {
-  position: relative;
-  padding: 6px 0 6px 26px;
-  color: var(--ink);
+.feature-text .checks {
+  margin-top: 22px;
 }
 
-.feature-text li::before {
-  content: "";
-  position: absolute;
-  left: 2px;
-  top: 15px;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--rose);
+.checks li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  color: var(--ink);
+  line-height: 1.45;
+}
+
+.check {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  margin-top: 0.15em;
+  fill: none;
+  stroke: var(--rose);
+  stroke-width: 2.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .pane {
@@ -604,105 +604,90 @@ p {
   transform: translateY(12%);
 }
 
-/* EN 1090 */
+/* EN 1090: links Aussage und Knopf, rechts der Stand. Gleiches Raster wie die Einrichtung, ohne Kasten. */
 .norm {
   display: grid;
-  grid-template-columns: 5fr 7fr;
-  gap: clamp(28px, 5vw, 64px);
-  margin-top: clamp(64px, 9vw, 112px);
-  padding: clamp(28px, 4vw, 48px);
-  border-radius: var(--radius-l);
-  background: var(--rose-soft);
-  box-shadow: 0 0 0 1px var(--rose-200);
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: clamp(40px, 7vw, 112px);
+  align-items: start;
+  margin-top: clamp(112px, 13vw, 176px);
 }
 
-.norm h3 {
-  font-size: clamp(1.4rem, 2.2vw, 1.75rem);
+.norm h3,
+.more h3 {
+  font-size: var(--fs-h3);
+  line-height: 1.15;
 }
 
-.norm > div > p {
-  margin-top: 14px;
+.norm-intro p {
+  max-width: 42ch;
+  margin-top: 16px;
   color: var(--ink-2);
-}
-
-.norm .btn {
-  margin-top: 24px;
-}
-
-.norm-lists {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-}
-
-.norm-lists > div {
-  padding: 20px 22px;
-  border-radius: var(--radius-m);
-  background: var(--surface);
-  box-shadow: 0 0 0 1px var(--rose-200);
 }
 
 .norm h4 {
-  margin: 0 0 10px;
-  font-size: 1.05rem;
-  letter-spacing: -0.01em;
-}
-
-.norm-lists ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.norm-lists li {
-  position: relative;
-  padding: 5px 0 5px 22px;
-  font-size: 15px;
-}
-
-.norm-lists li::before {
-  content: "";
-  position: absolute;
-  left: 2px;
-  top: 13px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--rose);
-}
-
-.norm-lists p {
-  color: var(--ink-2);
-  font-size: 15px;
-}
-
-/* Weitere Funktionen als ruhige Liste */
-.more {
-  margin-top: clamp(64px, 9vw, 112px);
-  padding: clamp(28px, 4vw, 48px);
-  border-radius: var(--radius-l);
-  background: var(--surface);
-  box-shadow: 0 0 0 1px var(--line);
-}
-
-.more h3 {
-  font-size: clamp(1.4rem, 2.2vw, 1.75rem);
-}
-
-.more dl {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 28px 40px;
-  margin: 32px 0 0;
-}
-
-.more dt {
+  margin: 0 0 18px;
+  font-size: 1.0625rem;
   font-weight: 650;
   letter-spacing: -0.01em;
 }
 
+.norm-status {
+  padding-top: 6px;
+}
+
+.norm-status h4:not(:first-child) {
+  margin-top: clamp(40px, 5vw, 56px);
+}
+
+.norm-status .checks {
+  gap: 16px;
+  max-width: 52ch;
+}
+
+/* Geplantes trägt einen gestrichelten Kreis, wie ein noch nicht erreichter Schritt im Ablauf */
+.plan {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  max-width: 52ch;
+  color: var(--ink-2);
+  line-height: 1.45;
+}
+
+.plan svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  margin-top: 0.15em;
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+/* Außerdem dabei: ein ruhiges Verzeichnis, die zwei Spalten stehen auf denselben Linien wie EN 1090 darüber */
+.more {
+  margin-top: clamp(112px, 13vw, 176px);
+}
+
+.more dl {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: clamp(36px, 4vw, 52px) clamp(40px, 7vw, 112px);
+  margin: clamp(32px, 4vw, 48px) 0 0;
+}
+
+.more dt {
+  font-size: 17px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
 .more dd {
-  margin: 6px 0 0;
+  max-width: 44ch;
+  margin: 8px 0 0;
   color: var(--ink-2);
   font-size: 16px;
 }
@@ -712,7 +697,13 @@ p {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   gap: clamp(32px, 6vw, 80px);
-  align-items: center;
+  align-items: start;
+}
+
+/* Das Bild bleibt beim Lesen stehen, wie die Überschrift in der Einrichtung */
+.portrait {
+  position: sticky;
+  top: 120px;
 }
 
 .portrait img {
@@ -721,7 +712,6 @@ p {
   object-fit: cover;
   object-position: 50% 30%;
   border-radius: 50%;
-  box-shadow: 0 0 0 1px var(--line), 0 30px 60px -36px rgb(15 23 42 / 0.45);
 }
 
 .origin h2 {
@@ -730,7 +720,7 @@ p {
 
 .origin .statement {
   margin: 24px 0 0;
-  max-width: 30ch;
+  max-width: 34ch;
   font-size: clamp(1.3rem, 2vw, 1.6rem);
   font-weight: 550;
   letter-spacing: -0.025em;
@@ -750,7 +740,7 @@ p {
 }
 
 .origin .sig {
-  margin-top: 24px;
+  margin-top: 16px;
   color: var(--ink-2);
   font-size: 16px;
 }
@@ -763,9 +753,8 @@ p {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: var(--ink);
-  font-weight: 600;
-  text-underline-offset: 3px;
+  padding-block: 10px;
+  margin-block: -10px;
 }
 
 .origin .sig svg {
@@ -775,14 +764,13 @@ p {
 
 /* LinkedIn-Logo einfarbig schwarz */
 .li svg {
-  fill: #000;
+  fill: var(--ink);
 }
 
+/* Zitat: getragen von Größe und Gewicht, ohne Farbstrich */
 .voice {
-  margin: 32px 0 0;
-  max-width: 52ch;
-  padding-left: 20px;
-  border-left: 3px solid var(--rose);
+  margin: 56px 0 0;
+  max-width: 44ch;
 }
 
 .voice blockquote {
@@ -792,155 +780,218 @@ p {
 .voice blockquote p {
   margin: 0;
   color: var(--ink);
-  font-size: 18px;
-  line-height: 1.5;
+  font-size: clamp(1.2rem, 1.7vw, 1.4rem);
+  font-weight: 550;
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+  text-indent: -0.42em; /* öffnendes „ hängt in den Rand, der Text steht bündig */
 }
 
 .voice figcaption {
-  margin-top: 10px;
+  margin-top: 14px;
   color: var(--ink-2);
-  font-size: 14px;
-}
-
-.voice a {
-  font-weight: 600;
-  text-underline-offset: 3px;
+  font-size: 15px;
 }
 
 .press {
   display: flex;
-  align-items: baseline;
-  gap: 8px;
-  margin: 24px 0 0;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 20px 0 0;
   max-width: 52ch;
   color: var(--ink-2);
   font-size: 15px;
 }
 
 .press svg {
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   flex: none;
-  fill: var(--rose);
+  margin-top: 0.2em;
+  fill: none;
+  stroke: var(--rose);
+  stroke-width: 2.25;
+  stroke-linejoin: round;
 }
 
-.press a {
+/* Verweise im Fließtext: gleiche Form überall */
+.sig a,
+.voice a,
+.press a,
+.diy a,
+.version a {
   color: var(--ink);
   font-weight: 600;
-  text-underline-offset: 3px;
 }
 
-/* Einrichtung */
-.steps {
+@media (hover: hover) and (pointer: fine) {
+  .sig a:hover,
+  .voice a:hover,
+  .press a:hover,
+  .diy a:hover,
+  .version a:hover,
+  .final .mail a:hover {
+    color: var(--rose-dark);
+  }
+}
+
+/* Einrichtung: Überschrift steht links, rechts läuft der Ablauf mit einer Linie, die sich beim Scrollen füllt */
+.flow-layout {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin: clamp(48px, 6vw, 72px) 0 0;
-  padding: 0;
-  list-style: none;
-  counter-reset: step;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: clamp(40px, 7vw, 112px);
+  align-items: start;
 }
 
-.steps li {
-  display: flex;
-  flex-direction: column;
-  padding: 28px 24px;
-  border-radius: var(--radius-m);
-  background: var(--surface);
-  box-shadow: 0 0 0 1px var(--line);
+.flow-head {
+  position: sticky;
+  top: 120px;
 }
 
-.steps li::before {
-  counter-increment: step;
-  content: counter(step);
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  margin-bottom: 28px;
-  border-radius: 50%;
-  background: var(--rose-soft);
-  color: var(--rose-dark);
-  font-weight: 650;
-  font-size: 15px;
-}
-
-.steps h3 {
-  font-size: 1.3rem;
-  letter-spacing: -0.02em;
-}
-
-.steps p {
-  margin-top: 10px;
-  color: var(--ink-2);
-  font-size: 16px;
-}
-
-.setup-list {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(24px, 4vw, 48px);
-  margin-top: 16px;
-  padding: clamp(28px, 4vw, 48px);
-  border-radius: var(--radius-l);
-  background: var(--surface);
-  color: var(--ink);
-  box-shadow: 0 0 0 1px var(--line), 0 1px 2px rgb(15 23 42 / 0.05);
-}
-
-.setup-list h3 {
-  font-size: clamp(1.4rem, 2.2vw, 1.75rem);
-}
-
-.setup-list p {
-  margin-top: 14px;
-  color: var(--ink-2);
-}
-
-.setup-list .btn {
-  margin-top: 24px;
-}
-
-.setup-list ul {
+.flow {
   margin: 0;
   padding: 0;
   list-style: none;
-  columns: 2;
-  column-gap: 32px;
 }
 
-.setup-list li {
+.flow li {
   position: relative;
-  break-inside: avoid;
-  padding: 7px 0 7px 26px;
+  padding: 0 0 clamp(40px, 5vw, 64px) 48px;
 }
 
-.setup-list li::before {
-  content: "";
+.flow li:last-child {
+  padding-bottom: 0;
+}
+
+/* Punkt sitzt auf Höhe der ersten Zeile der Überschrift */
+.flow-dot {
   position: absolute;
-  left: 2px;
-  top: 16px;
-  width: 9px;
-  height: 9px;
+  left: 0;
+  top: 9px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   background: var(--rose);
+  box-shadow: inset 0 0 0 2px var(--rose);
+  transition: background-color 240ms var(--ease-out), box-shadow 240ms var(--ease-out);
 }
 
-.tip {
-  margin-top: 16px;
-  padding: 18px 22px;
-  border-radius: var(--radius-m);
-  background: var(--rose-soft);
-  color: var(--ink);
+/* Strecke vom eigenen Punkt bis zum nächsten */
+.flow-track {
+  position: absolute;
+  left: 6px;
+  top: 16px;
+  bottom: -16px;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.flow li:last-child .flow-track {
+  display: none;
+}
+
+.flow-fill {
+  display: block;
+  height: 100%;
+  background: var(--rose);
+  transform-origin: top;
+}
+
+/* Mit Skript startet alles leer und füllt sich beim Scrollen. Ohne Skript bleibt der Ablauf komplett gefüllt. */
+.js .flow-fill {
+  transform: scaleY(0);
+}
+
+.js .flow li:not(.on) .flow-dot {
+  background: var(--bg);
+  box-shadow: inset 0 0 0 2px #cbd5e1; /* slate-300 */
+}
+
+.flow h3 {
+  font-size: clamp(1.35rem, 2.1vw, 1.7rem);
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+
+.flow p {
+  max-width: 44ch;
+  margin-top: 10px;
+  color: var(--ink-2);
+}
+
+/* Was ich einstelle: offen gesetzt, ohne Kasten */
+.setup {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: clamp(40px, 7vw, 112px);
+  align-items: start;
+  margin-top: clamp(96px, 12vw, 160px);
+}
+
+.setup-intro h3 {
+  font-size: var(--fs-h3);
+  line-height: 1.15;
+}
+
+.setup-intro p {
+  max-width: 42ch;
+  margin-top: 14px;
+  color: var(--ink-2);
   font-size: 16px;
 }
 
-.tip strong {
-  color: var(--rose-dark);
+.setup-intro .setup-price {
+  margin-top: 20px;
+  color: var(--ink);
+  font-size: clamp(1.2rem, 1.7vw, 1.4rem);
+  font-weight: 550;
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+  font-variant-numeric: tabular-nums;
+  text-wrap: balance;
+}
+
+.setup-intro .setup-tip {
+  margin-top: 24px;
+}
+
+.setup-tip strong {
+  color: var(--ink);
+}
+
+/* Knopf am Desktop links unter dem Text, gestapelt erst nach der Liste */
+.setup > .cta,
+.norm > .cta {
+  grid-column: 1;
+  grid-row: 2;
+  margin-top: -8px;
+}
+
+.setup-items,
+.norm-status {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+}
+
+.setup-items {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(6, auto); /* spaltenweise füllen: 6 + 5, kein einzelner Punkt in der letzten Zeile */
+  grid-auto-flow: column;
+  gap: 22px 40px;
+  margin: 0;
+  padding: 6px 0 0;
+  list-style: none;
+}
+
+.setup-items li {
+  font-size: 16px;
 }
 
 .diy {
-  margin-top: 28px;
+  margin-top: clamp(56px, 7vw, 88px);
   color: var(--ink-2);
   font-size: 16px;
 }
@@ -949,61 +1000,85 @@ p {
   display: inline-block;
   padding: 12px 0;
   margin: -12px 0;
-  font-weight: 600;
-  text-underline-offset: 3px;
 }
 
-/* Fragen */
+/* Fragen: Überschrift links, rechts eine offene Liste. Die feine Linie zeigt nur, wo eine Frage endet. */
 .faq {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-items: start;
-  gap: 12px 16px;
-  margin: clamp(40px, 5vw, 56px) auto 0;
+  margin: 0;
 }
 
 .faq details {
-  border-radius: var(--radius-m);
-  background: var(--surface);
-  box-shadow: 0 0 0 1px var(--line);
+  border-top: 1px solid var(--line);
+}
+
+.faq details:last-child {
+  border-bottom: 1px solid var(--line);
 }
 
 .faq summary {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 20px 24px;
+  gap: 24px;
+  padding: 22px 0;
+  font-size: clamp(1.02rem, 1.3vw, 1.125rem);
   font-weight: 600;
-  font-size: 17px;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
   cursor: pointer;
   list-style: none;
+  transition: color 160ms ease;
 }
 
 .faq summary::-webkit-details-marker {
   display: none;
 }
 
+.faq summary:focus-visible {
+  outline-offset: 2px;
+}
+
+/* Pfeil: Versatz und Drehung in einer Bewegung */
 .faq summary::after {
   content: "";
   flex: none;
   width: 10px;
   height: 10px;
-  margin-top: -4px;
   border-right: 2px solid var(--muted);
   border-bottom: 2px solid var(--muted);
-  transform: rotate(45deg);
-  transition: transform 200ms var(--ease-out);
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 200ms var(--ease-out), border-color 160ms ease;
 }
 
 .faq details[open] summary::after {
-  margin-top: 4px;
-  transform: rotate(-135deg);
+  border-color: var(--rose);
+  transform: translateY(2px) rotate(-135deg);
 }
 
 .faq details p {
-  padding: 0 24px 22px;
+  max-width: 62ch;
+  padding: 0 40px 26px 0;
   color: var(--ink-2);
+}
+
+.faq details[open] > p {
+  animation: antwort 220ms var(--ease-out);
+}
+
+@keyframes antwort {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .faq summary:hover {
+    color: var(--rose-dark);
+  }
+  .faq summary:hover::after {
+    border-color: var(--rose-dark);
+  }
 }
 
 /* Schluss */
@@ -1025,7 +1100,13 @@ p {
 }
 
 .final .mail a {
-  text-decoration: none;
+  display: inline-block;
+  padding-block: 12px;
+  margin-block: -12px;
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--rose-200);
 }
 
 .final h2 {
@@ -1090,7 +1171,6 @@ p {
   .foot nav a:hover {
     color: var(--ink);
     text-decoration: underline;
-    text-underline-offset: 3px;
   }
 }
 
@@ -1148,16 +1228,9 @@ p {
   --i: 3;
 }
 
-.hero .glow {
-  animation: drift 18s ease-in-out infinite alternate;
-}
-
-@keyframes drift {
+@keyframes antwort-blende {
   from {
-    transform: translateX(-50%) scale(1);
-  }
-  to {
-    transform: translateX(-48%) scale(1.06);
+    opacity: 0;
   }
 }
 
@@ -1169,8 +1242,8 @@ p {
     transform: none;
     transition: opacity 300ms ease;
   }
-  .hero .glow {
-    animation: none;
+  .faq details[open] > p {
+    animation-name: antwort-blende;
   }
   .btn {
     transition: background-color 160ms ease, color 160ms ease;
@@ -1189,20 +1262,32 @@ p {
   .feature,
   .feature.flip,
   .origin,
-  .setup-list {
+  .flow-layout,
+  .setup,
+  .norm {
     grid-template-columns: 1fr;
+  }
+  .flow-head,
+  .portrait {
+    position: static;
+  }
+  .setup > .cta,
+  .norm > .cta,
+  .setup-items,
+  .norm-status {
+    grid-column: auto;
+    grid-row: auto;
+  }
+  .setup > .cta,
+  .norm > .cta {
+    margin-top: 0;
   }
   .feature.flip .feature-text {
     order: 0;
   }
-  .steps {
-    grid-template-columns: repeat(2, 1fr);
-  }
   .more dl {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .faq {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 40px;
   }
 }
 
@@ -1227,18 +1312,17 @@ p {
     justify-content: flex-start;
   }
   .facts ul,
-  .steps,
   .more dl {
     grid-template-columns: 1fr;
   }
   .facts ul {
     gap: 24px;
   }
-  .setup-list ul {
-    columns: 1;
-  }
-  .section-head.center {
-    text-align: left;
+  .setup-items {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    grid-auto-flow: row;
+    gap: 16px;
   }
   .final {
     text-align: left;
@@ -1825,10 +1909,6 @@ p {
 }
 
 @media (max-width: 960px) {
-  .norm,
-  .norm-lists {
-    grid-template-columns: 1fr;
-  }
   .app-back {
     display: none;
   }

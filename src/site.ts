@@ -2,6 +2,7 @@
 
 export const EMAIL = 'm.kuhn864@gmail.com';
 export const GITHUB_URL = 'https://github.com/Winfo2024Kuhn/ERP-System-fuer-Handwerksbetriebe';
+export const LINKEDIN_URL = 'https://www.linkedin.com/in/marvin-kuhn-032400169/';
 export const SITE_NAME = 'Handwerkerprogramm';
 
 /** Basis-Pfad mit Schrägstrich am Ende, z. B. "/erp-fuer-handwerksbetriebe/". */

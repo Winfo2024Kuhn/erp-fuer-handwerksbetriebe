@@ -10,6 +10,20 @@ export default defineConfig({
   base: '/erp-fuer-handwerksbetriebe',
   trailingSlash: 'ignore',
   build: { format: 'file' },
+  // GitHub Pages erlaubt keine eigenen HTTP-Header, daher kommt die CSP als <meta>-Tag.
+  // Astro trägt die Hashes aller eigenen Inline-Skripte und -Styles selbst ein.
+  security: {
+    csp: {
+      directives: [
+        "default-src 'self'",
+        "img-src 'self'",
+        "media-src 'self'",
+        "object-src 'none'",
+        "base-uri 'self'",
+        "form-action 'none'",
+      ],
+    },
+  },
   integrations: [
     sitemap({
       // Kein lastmod: Das Baudatum wäre bei jedem Bauen neu, auch ohne geänderten Inhalt.

@@ -1041,6 +1041,17 @@ p {
   transform: none;
 }
 
+/* Versatz als Klasse statt style-Attribut, damit die CSP keine Inline-Styles erlauben muss */
+.d1 {
+  --i: 1;
+}
+.d2 {
+  --i: 2;
+}
+.d3 {
+  --i: 3;
+}
+
 .hero .glow {
   animation: drift 18s ease-in-out infinite alternate;
 }

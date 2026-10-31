@@ -295,6 +295,19 @@ p {
   margin-top: 32px;
 }
 
+.hero .version {
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.hero .version a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+
 .btn-l {
   min-height: 50px;
   padding: 0 24px;

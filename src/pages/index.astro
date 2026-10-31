@@ -7,7 +7,7 @@ import { ANBIETER, EMAIL, GITHUB_URL, absoluteUrl, letztesRelease, mailto, url }
 
 const title = 'Kostenlose Handwerkersoftware – Open Source, mit E-Rechnung';
 const description =
-  'Angebote, Rechnungen inkl. E-Rechnung, Zeiterfassung per Handy und Nachkalkulation. Kostenlos und Open Source, entstanden im Metallbau. Einrichtung auf Wunsch.';
+  'Angebote, Rechnungen mit E-Rechnung, Zeiterfassung per Handy, Nachkalkulation. Kostenlos und Open Source, aus dem Metallbau. Einrichtung auf Wunsch.';
 
 const release = await letztesRelease();
 const releaseDatum = release?.datum.toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Berlin' });
@@ -16,11 +16,11 @@ const releaseIso = release?.datum.toISOString().slice(0, 10);
 const faqs = [
   {
     q: 'Gibt es kostenlose Handwerkersoftware ohne Abo?',
-    a: 'Ja. Das Handwerkerprogramm ist Open Source unter der Lizenz AGPL v3 und kostet nichts, auch nicht pro Mitarbeiter. Es deckt den Ablauf von der Anfrage bis zur bezahlten Rechnung ab: Angebote und Rechnungen mit E-Rechnung nach EN 16931 (ZUGFeRD, XRechnung), Zeiterfassung per Handy auch ohne Netz, Bautagebuch und Nachkalkulation je Projekt. Es läuft auf einem Windows-PC oder Linux-Server in Ihrem Büro, Ihre Daten bleiben also im Betrieb. Entstanden ist es im Metallbaubetrieb meiner Familie, wo es jeden Tag im Einsatz ist.',
+    a: 'Ja. Das Handwerkerprogramm ist eine Handwerkersoftware mit offenem Quellcode (Lizenz AGPL v3), also ein ERP-System für Handwerksbetriebe, und kostet nichts, auch nicht pro Mitarbeiter. Es deckt den Ablauf von der Anfrage bis zur bezahlten Rechnung ab: Angebote und Rechnungen mit E-Rechnung nach EN 16931 (ZUGFeRD, XRechnung), Zeiterfassung per Handy auch ohne Netz, Bautagebuch und Nachkalkulation je Projekt. Es läuft auf einem Windows-PC oder Linux-Server in Ihrem Büro, Ihre Daten bleiben also im Betrieb. Entstanden ist es im Metallbaubetrieb meiner Familie mit sechs Mitarbeitern, dort läuft es seit einem Jahr jeden Tag.',
   },
   {
     q: 'Was kostet das Programm?',
-    a: 'Nichts. Das Programm ist Open Source und kostenlos, ohne Abo und ohne Gebühr pro Mitarbeiter. Geld kostet nur die Einrichtung, wenn ich sie für Sie übernehme. Dafür bekommen Sie vorher ein Angebot.',
+    a: 'Nichts. Das Programm ist Open Source und kostenlos, ohne Abo und ohne Gebühr pro Mitarbeiter. Geld kostet nur die Einrichtung, wenn ich sie für Sie übernehme: 50 € pro Stunde, meist 3 bis 4 Tage, also rund 1.200 bis 1.600 €. Als Kleinunternehmer nach § 19 UStG berechne ich keine Umsatzsteuer. Vorher bekommen Sie ein Angebot.',
   },
   {
     q: 'Wo liegen meine Daten?',
@@ -76,6 +76,7 @@ const jsonLd = {
       about: { '@id': software },
       author: { '@id': person },
       inLanguage: 'de-DE',
+      dateModified: new Date().toISOString(),
     },
     {
       '@type': 'Person',
@@ -83,7 +84,7 @@ const jsonLd = {
       name: 'Marvin Kuhn',
       jobTitle: 'Metallbaumeister',
       hasCredential: { '@type': 'EducationalOccupationalCredential', credentialCategory: 'Meisterbrief', name: 'Metallbaumeister' },
-      knowsAbout: ['Metallbau', 'EN 1090', 'Handwerkersoftware', 'E-Rechnung'],
+      knowsAbout: ['Metallbau', 'EN 1090', 'Handwerkersoftware', 'E-Rechnung', 'Wirtschaftsinformatik'],
       image: absoluteUrl('img/marvin-kuhn.webp'),
       address: { '@type': 'PostalAddress', addressLocality: 'Würzburg', addressRegion: 'Bayern', addressCountry: 'DE' },
       sameAs: ['https://github.com/Winfo2024Kuhn'],
@@ -151,6 +152,10 @@ const jsonLd = {
         { '@type': 'Country', name: 'Deutschland' },
       ],
       audience: { '@type': 'BusinessAudience', audienceType: 'Handwerksbetriebe, Metallbau, Schlossereien' },
+      offers: {
+        '@type': 'Offer',
+        priceSpecification: { '@type': 'UnitPriceSpecification', price: '50', priceCurrency: 'EUR', unitCode: 'HUR', unitText: 'Stunde' },
+      },
     },
     {
       '@type': 'FAQPage',
@@ -163,6 +168,8 @@ const heroSrc = url('img/projekt-nachkalkulation.webp');
 const heroSrcset = `${url('img/projekt-nachkalkulation-900.webp')} 900w, ${heroSrc} 1600w`;
 const anfrageMail = mailto('Anfrage: Einrichtung Handwerkerprogramm');
 const normMail = mailto('Anmerkung zur EN 1090 im Handwerkerprogramm');
+// Öffentlicher Beitrag eines Metallbauers in den GitHub-Discussions
+const stimmeUrl = `${GITHUB_URL}/discussions/10`;
 
 // Dateiansicht wie im PC-Programm (Reiter „Dateien“), nur Demo-Namen
 const ordner = [
@@ -269,7 +276,7 @@ const mehr = [
       <h1 id="titel">Kostenlose Software für Ihren Handwerksbetrieb</h1>
       <p class="lead">
         Das Handwerkerprogramm ist Open Source und vereint Angebote, Rechnungen mit E-Rechnung, Zeiterfassung per Handy und Nachkalkulation in
-        einem Programm. Ich bin Metallbaumeister, habe es für den Betrieb meiner Familie gebaut und richte es auf Wunsch bei Ihnen ein.
+        einer Handwerkersoftware. Ich bin Metallbaumeister, habe es für den Betrieb meiner Familie gebaut und richte es auf Wunsch bei Ihnen ein.
       </p>
       <div class="hero-actions">
         <a class="btn btn-rose btn-l" href={anfrageMail}>Einrichtung anfragen</a>
@@ -490,12 +497,13 @@ const mehr = [
           <h3 class="reveal">Ein Ordner für alle Zeichnungen</h3>
           <p class="reveal d1">
             Excel-Tabellen, HiCAD- und Tenado-Zeichnungen liegen in einem gemeinsamen Ordner auf dem Rechner im Büro. Aus dem Projekt öffnen Sie
-            jede Datei mit einem Klick im passenden Programm. Keine USB-Sticks, keine Kopien per E-Mail und kein fremder Cloud-Anbieter.
+            jede Datei mit einem Klick im passenden Programm. Keine USB-Sticks und keine Kopien per E-Mail: Gearbeitet wird direkt auf dem Rechner
+            im Büro, nicht in einer fremden Cloud.
           </p>
           <ul class="reveal d2">
             <li>Öffnet per Klick in Excel, HiCAD oder Tenado, unter Windows und Mac</li>
             <li>Für alle im Betrieb gleich, auf Wunsch auch von unterwegs</li>
-            <li>Jede Nacht mitgesichert</li>
+            <li>Jede Nacht mitgesichert, auf Festplatte und in Ihr OneDrive</li>
           </ul>
         </div>
         <div class="pane steel reveal d1">
@@ -644,10 +652,22 @@ const mehr = [
         <p class="eyebrow reveal">Wer dahinter steht</p>
         <h2 id="herkunft-titel" class="reveal">Gebaut im eigenen Betrieb</h2>
         <p class="statement reveal d1">
-          Das Programm ist im Metallbaubetrieb meiner Familie entstanden und läuft dort jeden Tag. Ich bin Metallbaumeister, studiere
+          Das Programm ist im Metallbaubetrieb meiner Familie entstanden. Seit einem Jahr arbeiten dort sechs Mitarbeiter jeden Tag
+          damit, in Büro, Werkstatt und auf der Baustelle. Ich bin Metallbaumeister, studiere
           Wirtschaftsinformatik und entwickle es aus der Praxis weiter.
         </p>
         <p class="sig reveal d2"><strong>Marvin Kuhn</strong>, Metallbaumeister aus Würzburg</p>
+        <figure class="voice reveal d3">
+          <blockquote cite={stimmeUrl}>
+            <p>
+              „Das Handwerkerprogramm ist sehr gut gemacht … insgesamt lässt das Programm für einen Handwerksbetrieb sehr wenig Wünsche
+              offen.“
+            </p>
+          </blockquote>
+          <figcaption>
+            modl00 aus einem Metallbaubetrieb, hat es per Docker auf einer Synology-NAS getestet. <a href={stimmeUrl}>Ganzer Beitrag auf GitHub</a>
+          </figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -665,7 +685,7 @@ const mehr = [
 
       <ol class="steps">
         <li class="reveal"><h3>Kennenlernen</h3><p>Ein kurzes Gespräch: Gewerk, Mitarbeiter, Abläufe und womit Sie heute arbeiten.</p></li>
-        <li class="reveal d1"><h3>Installieren</h3><p>Auf einem PC oder Server in Ihrem Büro, mit nächtlicher Sicherung und automatischen Updates.</p></li>
+        <li class="reveal d1"><h3>Installieren</h3><p>Auf einem PC oder Server in Ihrem Büro, mit nächtlicher Sicherung. Updates holt sich das Programm nachts selbst und springt bei Problemen auf die alte Version zurück.</p></li>
         <li class="reveal d2"><h3>Einrichten</h3><p>Firmendaten, Briefpapier, Mitarbeiter und Postfächer. Ihre Daten aus dem alten Programm übernehme ich innerhalb einer Woche.</p></li>
         <li class="reveal d3"><h3>Loslegen</h3><p>Einweisung fürs Büro und die Handy-App für Ihre Leute. Danach erreichen Sie mich per Telefon und E-Mail.</p></li>
       </ol>
@@ -673,7 +693,10 @@ const mehr = [
       <div class="setup-list reveal">
         <div>
           <h3>Was ich für Sie einstelle</h3>
-          <p>Individuell nach Ihrem Betrieb. Sie bekommen nach dem Gespräch ein Angebot für die Einrichtung. Das Programm selbst kostet nichts.</p>
+          <p>
+            Individuell nach Ihrem Betrieb. Meist dauert die Einrichtung 3 bis 4 Tage, ich rechne 50 € pro Stunde ab, ohne Umsatzsteuer
+            (Kleinunternehmer nach § 19 UStG). Nach dem Gespräch bekommen Sie ein Angebot. Das Programm selbst kostet nichts.
+          </p>
           <a class="btn btn-rose" href={anfrageMail}>Einrichtung anfragen</a>
         </div>
         <ul>

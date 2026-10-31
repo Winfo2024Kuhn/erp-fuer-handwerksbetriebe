@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import MacBook from '../components/MacBook.astro';
 import Phone from '../components/Phone.astro';
 import Telefon from '../components/Telefon.astro';
+import Check from '../components/Check.astro';
 import { ANBIETER, EMAIL, GITHUB_URL, LINKEDIN_URL, absoluteUrl, letztesRelease, mailto, url } from '../site';
 
 const title = 'Kostenlose Handwerkersoftware – Open Source, mit E-Rechnung';
@@ -16,11 +17,11 @@ const releaseIso = release?.datum.toISOString().slice(0, 10);
 const faqs = [
   {
     q: 'Gibt es kostenlose Handwerkersoftware ohne Abo?',
-    a: 'Ja. Das Handwerkerprogramm ist eine Handwerkersoftware mit offenem Quellcode (Lizenz AGPL v3), also ein ERP-System für Handwerksbetriebe, und kostet nichts, auch nicht pro Mitarbeiter. Es deckt den Ablauf von der Anfrage bis zur bezahlten Rechnung ab: Angebote und Rechnungen mit E-Rechnung nach EN 16931 (ZUGFeRD, XRechnung), Zeiterfassung per Handy auch ohne Netz, Bautagebuch und Nachkalkulation je Projekt. Es läuft auf einem Windows-PC oder Linux-Server in Ihrem Büro, Ihre Daten bleiben also im Betrieb. Entstanden ist es im Metallbaubetrieb meiner Familie mit sechs Mitarbeitern, dort läuft es seit einem Jahr jeden Tag.',
+    a: 'Ja. Das Handwerkerprogramm ist eine Handwerkersoftware mit offenem Quellcode (Lizenz AGPL v3), also ein ERP-System für Handwerksbetriebe, und kostet nichts, auch nicht pro Mitarbeiter. Es deckt den Ablauf von der Anfrage bis zur bezahlten Rechnung ab: Angebote und Rechnungen mit E‑Rechnung nach EN 16931 (ZUGFeRD, XRechnung), Zeiterfassung per Handy auch ohne Netz, Bautagebuch und Nachkalkulation je Projekt. Es läuft auf einem Windows-PC oder Linux-Server in Ihrem Büro, Ihre Daten bleiben also im Betrieb. Entstanden ist es im Metallbaubetrieb meiner Familie mit sechs Mitarbeitern, dort läuft es seit einem Jahr jeden Tag.',
   },
   {
     q: 'Was kostet das Programm?',
-    a: 'Nichts. Das Programm ist Open Source und kostenlos, ohne Abo und ohne Gebühr pro Mitarbeiter. Geld kostet nur die Einrichtung, wenn ich sie für Sie übernehme: 50 € pro Stunde, meist 3 bis 4 Tage, also rund 1.200 bis 1.600 €. Als Kleinunternehmer nach § 19 UStG berechne ich keine Umsatzsteuer. Vorher bekommen Sie ein Angebot.',
+    a: 'Nichts. Das Programm ist Open Source und kostenlos, ohne Abo und ohne Gebühr pro Mitarbeiter. Geld kostet nur die Einrichtung, wenn ich sie für Sie übernehme: 50 € pro Stunde, meist 3 bis 4 Tage, also rund 1.200 bis 1.600 €. Als Kleinunternehmer nach § 19 UStG berechne ich keine Umsatzsteuer. Vorher bekommen Sie ein Angebot.',
   },
   {
     q: 'Warum ist das Programm kostenlos?',
@@ -47,8 +48,8 @@ const faqs = [
     a: 'Gebaut wurde es im Metallbau, es passt aber zu den meisten Gewerken: Schlosserei, Schreinerei, Elektro, Sanitär und Heizung. Die Abläufe von der Anfrage bis zur Schlussrechnung sind fast überall gleich. Was bei Ihnen anders läuft, klären wir vorher.',
   },
   {
-    q: 'Unterstützt das Programm die EN 1090?',
-    a: 'Zum Teil. Werkstoffzeugnisse Ihrer Lieferanten (3.1, 3.2 und 2.2 nach EN 10204) erkennt das Programm mit Werkstoff und Charge und hängt sie an den Lieferschein. Jedes Projekt hat einen eigenen Ordner für die 1090-Dokumentation. Weitere Bausteine sind in Planung, Ihre Anmerkungen dazu sind ausdrücklich erwünscht.',
+    q: 'Unterstützt das Programm die EN 1090?',
+    a: 'Zum Teil. Werkstoffzeugnisse Ihrer Lieferanten (3.1, 3.2 und 2.2 nach EN 10204) erkennt das Programm mit Werkstoff und Charge und hängt sie an den Lieferschein. Jedes Projekt hat einen eigenen Ordner für die 1090-Dokumentation. Weitere Bausteine sind in Planung, Ihre Anmerkungen dazu sind ausdrücklich erwünscht.',
   },
   {
     q: 'Auf welchem Rechner läuft es?',
@@ -56,7 +57,7 @@ const faqs = [
   },
   {
     q: 'Kann das Programm E-Rechnungen?',
-    a: 'Ja. Rechnungen gehen als ZUGFeRD oder XRechnung nach EN 16931 raus, und E-Rechnungen von Lieferanten werden automatisch eingelesen.',
+    a: 'Ja. Rechnungen gehen als ZUGFeRD oder XRechnung nach EN 16931 raus, und E-Rechnungen von Lieferanten werden automatisch eingelesen.',
   },
   {
     q: 'Brauche ich dafür KI?',
@@ -67,6 +68,8 @@ const faqs = [
     a: 'Ja. Die Schritt-für-Schritt-Anleitung liegt auf GitHub. Unter Windows startet die Einrichtung per Doppelklick und installiert fehlende Teile mit. Sicherung und Handy-Zugang richten Sie danach nach Checkliste ein. Etwas PC-Erfahrung sollten Sie mitbringen.',
   },
 ];
+
+const klar = (text: string) => text.replace(/\u00a0/g, ' ').replace(/\u2011/g, '-');
 
 const home = absoluteUrl();
 const person = `${home}#marvin`;
@@ -176,7 +179,8 @@ const jsonLd = {
     },
     {
       '@type': 'FAQPage',
-      mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+      // Für Suchmaschinen ohne geschützte Leerzeichen und Bindestriche, die nur den Zeilenumbruch steuern
+      mainEntity: faqs.map((f) => ({ '@type': 'Question', name: klar(f.q), acceptedAnswer: { '@type': 'Answer', text: klar(f.a) } })),
     },
   ],
 };
@@ -272,13 +276,39 @@ const icon = {
   uhr: 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20ZM12 6v6l4 2',
   ordner: 'M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z',
   play: 'M6 4l14 8-14 8Z',
+  geplant:
+    'M10.1 2.18a10 10 0 0 1 3.8 0M13.9 21.82a10 10 0 0 1-3.8 0M17.61 3.72a10 10 0 0 1 2.69 2.7M2.18 13.9a10 10 0 0 1 0-3.8M20.28 17.61a10 10 0 0 1-2.7 2.69M21.82 10.1a10 10 0 0 1 0 3.8M3.72 6.39a10 10 0 0 1 2.7-2.69M6.39 20.28a10 10 0 0 1-2.69-2.7',
   linkedin: 'M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 4.89v6.25ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13Zm1.78 13.02H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z',
   hammer: 'M15 12l-8.4 8.4a2.1 2.1 0 1 1-3-3L12 9M17.6 15 22 10.6M20.9 11.6l-1.3-1.3a2.1 2.1 0 0 1 0-3l-.9-.9a2.1 2.1 0 0 0-3 0L13 9.2',
 };
 
+const ablauf = [
+  { t: 'Kennenlernen', d: 'Ein kurzes Gespräch: Gewerk, Mitarbeiter, Abläufe und womit Sie heute arbeiten.' },
+  {
+    t: 'Installieren',
+    d: 'Auf einem PC oder Server in Ihrem Büro, mit nächtlicher Sicherung. Updates holt sich das Programm nachts selbst und springt bei Problemen auf die alte Version zurück.',
+  },
+  { t: 'Einrichten', d: 'Firmendaten, Briefpapier, Mitarbeiter und Postfächer. Ihre Daten aus dem alten Programm übernehme ich innerhalb einer Woche.' },
+  { t: 'Loslegen', d: 'Einweisung fürs Büro und die Handy‑App für Ihre Leute. Danach erreichen Sie mich per Telefon und E-Mail.' },
+];
+
+const einstellungen = [
+  'Übernahme Ihrer Daten aus dem alten Programm',
+  'Firmendaten und Briefpapier',
+  'Mitarbeiter, Rechte und Abteilungen',
+  'Handy-App per QR-Code',
+  'E-Mail-Postfächer und Signaturen',
+  'Leistungskatalog und Textvorlagen',
+  'Arbeitszeiten, Feiertage, Urlaub',
+  'Zahlungsfristen und Mahnstufen',
+  'Gemeinsamer Ordner für Zeichnungen',
+  'Sicherung auf Festplatte und OneDrive',
+  'Zugriff von unterwegs',
+];
+
 const mehr = [
   { t: 'Kalender', d: 'Montagen, Aufmaße und Kundentermine für alle, mit Urlaub und Feiertagen. Erinnerung aufs Handy einen Tag und eine Stunde vorher.' },
-  { t: 'Angebot per Link annehmen', d: 'Ihr Kunde bestätigt das Angebot mit einem Code aus der E-Mail. Projekt und Auftragsbestätigung entstehen von selbst.' },
+  { t: 'Angebot per Link annehmen', d: 'Ihr Kunde bestätigt das Angebot mit einem Code aus der E‑Mail. Projekt und Auftragsbestätigung entstehen von selbst.' },
   { t: 'Anfragen von Ihrer Website', d: 'Mit Fotos und Nachricht direkt im Programm. Sie bekommen eine Nachricht aufs Handy.' },
   { t: 'Lieferantenrechnungen aus dem Postfach', d: 'Werden eingelesen und dem Projekt zugeordnet. Das Material landet gleich in der Nachkalkulation.' },
   { t: 'Mahnungen von selbst', d: 'Zahlungserinnerung, 1. und 2. Mahnung gehen auf Wunsch automatisch per E-Mail raus.' },
@@ -306,7 +336,7 @@ const mehr = [
       {
         release && (
           <p class="version">
-            Aktuelle Version {release.version} vom <time datetime={releaseIso}>{releaseDatum}</time> · <a target="_blank" rel="noopener" href={release.url}>Was neu ist</a>
+            Aktuelle Version {release.version} vom <time datetime={releaseIso}>{releaseDatum}</time> · <a target="_blank" rel="noopener" href={release.url}>Was neu ist<span class="sr"> (öffnet neuen Tab)</span></a>
           </p>
         )
       }
@@ -328,7 +358,7 @@ const mehr = [
 
   <section class="facts" aria-label="Das Wichtigste in Kürze">
     <div class="wrap">
-      <ul>
+      <ul role="list">
         <li class="reveal"><strong>Kostenlos</strong><span>Kein Abo, keine Gebühr pro Mitarbeiter.</span></li>
         <li class="reveal d1"><strong>Ihre Daten bleiben im Betrieb</strong><span>Läuft auf einem Rechner in Ihrem Büro, nicht bei einem Software-Anbieter.</span></li>
         <li class="reveal d2"><strong>E-Rechnung inklusive</strong><span>Schreibt und liest E-Rechnungen (ZUGFeRD, XRechnung).</span></li>
@@ -340,7 +370,6 @@ const mehr = [
   <section class="section" id="funktionen" aria-labelledby="funktionen-titel">
     <div class="wrap">
       <div class="section-head">
-        <p class="eyebrow reveal">Funktionen</p>
         <h2 id="funktionen-titel" class="reveal">Von der Anfrage bis zur bezahlten Rechnung</h2>
         <p class="reveal d1">Ein Programm für Büro, Werkstatt und Baustelle. Knöpfe und Listen heißen so, wie man in der Werkstatt redet.</p>
       </div>
@@ -429,10 +458,10 @@ const mehr = [
             Fotos von der Baustelle, Fortschritt, Mängel: Ihre Leute halten alles mit dem Handy im Tagebuch des Projekts fest. Das Büro sieht es
             sofort, und bei Rückfragen vom Kunden ist alles mit Datum belegt.
           </p>
-          <ul class="reveal d2">
-            <li>Fotos direkt mit der Handykamera oder aus der Galerie</li>
-            <li>Einträge auch per Spracheingabe (mit den freiwilligen KI-Funktionen)</li>
-            <li>Fotos aus Website-Anfragen landen gleich mit im Tagebuch</li>
+          <ul class="checks reveal d2" role="list">
+            <li><Check />Fotos direkt mit der Handykamera oder aus der Galerie</li>
+            <li><Check />Einträge auch per Spracheingabe (mit den freiwilligen KI‑Funktionen)</li>
+            <li><Check />Fotos aus Website-Anfragen landen gleich mit im Tagebuch</li>
           </ul>
         </div>
         <figure class="pane warm phone-pane single reveal d1">
@@ -521,10 +550,10 @@ const mehr = [
             jede Datei mit einem Klick im passenden Programm. Keine USB-Sticks und keine Kopien per E-Mail: Gearbeitet wird direkt auf dem Rechner
             im Büro, nicht in einer fremden Cloud.
           </p>
-          <ul class="reveal d2">
-            <li>Öffnet per Klick in Excel, HiCAD oder Tenado, unter Windows und Mac</li>
-            <li>Für alle im Betrieb gleich, auf Wunsch auch von unterwegs</li>
-            <li>Jede Nacht mitgesichert, auf Festplatte und in Ihr OneDrive</li>
+          <ul class="checks reveal d2" role="list">
+            <li><Check />Öffnet per Klick in Excel, HiCAD oder Tenado, unter Windows und Mac</li>
+            <li><Check />Für alle im Betrieb gleich, auf Wunsch auch von unterwegs</li>
+            <li><Check />Jede Nacht mitgesichert, auf Festplatte und in Ihr OneDrive</li>
           </ul>
         </div>
         <div class="pane steel reveal d1">
@@ -574,10 +603,10 @@ const mehr = [
             Ihre Leute stempeln auf der Baustelle direkt auf Projekt und Arbeitsgang. Ohne Empfang speichert das Handy und gleicht später ab, es geht
             keine Stunde verloren.
           </p>
-          <ul class="reveal d2">
-            <li>Läuft auf iPhone und Android</li>
-            <li>Urlaub, Krankheit und Stundenkonto</li>
-            <li>Monatsabschluss und Export für die Lohnabrechnung (DATEV)</li>
+          <ul class="checks reveal d2" role="list">
+            <li><Check />Läuft auf iPhone und Android</li>
+            <li><Check />Urlaub, Krankheit und Stundenkonto</li>
+            <li><Check />Monatsabschluss und Export für die Lohnabrechnung (DATEV)</li>
           </ul>
         </div>
         <div class="pane phone-pane straw reveal d1">
@@ -590,10 +619,10 @@ const mehr = [
         <div class="feature-text">
           <h3 class="reveal">Angebote und Rechnungen, mit E-Rechnung</h3>
           <p class="reveal d1">Leistungen aus Ihrem Katalog ziehen, Preise anpassen, daneben sehen Sie gleich das fertige PDF auf Ihrem Briefpapier.</p>
-          <ul class="reveal d2">
-            <li>Angebot, Auftragsbestätigung, Abschlags- und Schlussrechnung</li>
-            <li>Leistungsverzeichnisse aus Ausschreibungen als GAEB-Datei einlesen</li>
-            <li>Sehen, wer noch nicht bezahlt hat, und mahnen</li>
+          <ul class="checks reveal d2" role="list">
+            <li><Check />Angebot, Auftragsbestätigung, Abschlags- und Schlussrechnung</li>
+            <li><Check />Leistungsverzeichnisse aus Ausschreibungen als GAEB-Datei einlesen</li>
+            <li><Check />Sehen, wer noch nicht bezahlt hat, und mahnen</li>
           </ul>
         </div>
         <div class="pane warm reveal d1">
@@ -614,38 +643,37 @@ const mehr = [
         </div>
       </article>
 
-      <div class="norm reveal">
-        <div>
-          <h3>EN 1090 im Metallbau</h3>
-          <p>
-            Für Betriebe, die Stahl- und Aluminiumtragwerke nach EN 1090 fertigen, ist ein Teil der Dokumentation schon im Programm. Weitere
+      <div class="norm">
+        <div class="norm-intro">
+          <h3 class="reveal">EN 1090 im Metallbau</h3>
+          <p class="reveal d1">
+            Für Betriebe, die Stahl- und Aluminiumtragwerke nach EN 1090 fertigen, ist ein Teil der Dokumentation schon im Programm. Weitere
             Bausteine sind in Planung. Was Sie bei der 1090-Dokumentation am meisten Zeit kostet, interessiert mich: Ihre Anmerkungen fließen
             direkt in die Entwicklung ein.
           </p>
-          <a class="btn btn-light" href={normMail}>Anmerkung schreiben</a>
         </div>
-        <div class="norm-lists">
-          <div>
-            <h4>Schon drin</h4>
-            <ul>
-              <li>Werkstoffzeugnisse 3.1, 3.2 und 2.2 nach EN 10204 aus dem Postfach erkennen, mit Werkstoff und Charge (mit den freiwilligen KI-Funktionen)</li>
-              <li>Zeugnis hängt am passenden Lieferschein und lässt sich über die Positionen wiederfinden</li>
-              <li>Eigener Ordner „Dokumentation 1090“ in jedem Projekt</li>
-            </ul>
-          </div>
-          <div>
-            <h4>In Planung</h4>
-            <p>Weitere Nachweise rund um die 1090-Dokumentation. Welche zuerst kommen, richte ich nach den Rückmeldungen aus den Betrieben.</p>
-          </div>
+        <div class="norm-status">
+          <h4 class="reveal">Schon drin</h4>
+          <ul class="checks reveal d1" role="list">
+            <li><Check />Werkstoffzeugnisse 3.1, 3.2 und 2.2 nach EN 10204 aus dem Postfach erkennen, mit Werkstoff und Charge (mit den freiwilligen KI‑Funktionen)</li>
+            <li><Check />Zeugnis hängt am passenden Lieferschein und lässt sich über die Positionen wiederfinden</li>
+            <li><Check />Eigener Ordner „Dokumentation 1090“ in jedem Projekt</li>
+          </ul>
+          <h4 class="reveal">In Planung</h4>
+          <p class="plan reveal d1">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d={icon.geplant}></path></svg>
+            <span>Weitere Nachweise rund um die 1090-Dokumentation. Welche zuerst kommen, richte ich nach den Rückmeldungen aus den Betrieben.</span>
+          </p>
         </div>
+        <div class="cta reveal d2"><a class="btn btn-light" href={normMail}>Anmerkung schreiben</a></div>
       </div>
 
-      <div class="more reveal">
-        <h3>Außerdem dabei</h3>
+      <div class="more">
+        <h3 class="reveal">Außerdem dabei</h3>
         <dl>
           {
-            mehr.map((m) => (
-              <div>
+            mehr.map((m, i) => (
+              <div class:list={['reveal', { d1: i % 2 === 1 }]}>
                 <dt>{m.t}</dt>
                 <dd>{m.d}</dd>
               </div>
@@ -670,7 +698,6 @@ const mehr = [
         />
       </div>
       <div>
-        <p class="eyebrow reveal">Wer dahinter steht</p>
         <h2 id="herkunft-titel" class="reveal">Gebaut im eigenen Betrieb</h2>
         <p class="statement reveal d1">
           Das Programm ist im Metallbaubetrieb meiner Familie entstanden. Seit einem Jahr arbeiten dort sechs Mitarbeiter jeden Tag
@@ -684,22 +711,22 @@ const mehr = [
           Verfügung.
         </p>
         <p class="sig reveal d2"><strong>Marvin Kuhn</strong>, Metallbaumeister aus Würzburg ·{' '}
-          <a target="_blank" rel="noopener" class="li" href={LINKEDIN_URL}><svg viewBox="0 0 24 24" aria-hidden="true"><path d={icon.linkedin}></path></svg>LinkedIn</a>
+          <a target="_blank" rel="noopener" class="li" href={LINKEDIN_URL}><svg viewBox="0 0 24 24" aria-hidden="true"><path d={icon.linkedin}></path></svg>LinkedIn<span class="sr"> (öffnet neuen Tab)</span></a>
         </p>
         <figure class="voice reveal d3">
           <blockquote cite={stimmeUrl}>
             <p>
-              „Das Handwerkerprogramm ist sehr gut gemacht … insgesamt lässt das Programm für einen Handwerksbetrieb sehr wenig Wünsche
+              „Das Handwerkerprogramm ist sehr gut gemacht … insgesamt lässt das Programm für einen Handwerksbetrieb sehr wenig Wünsche
               offen.“
             </p>
           </blockquote>
           <figcaption>
-            modl00 aus einem Metallbaubetrieb, hat es per Docker auf einer Synology-NAS getestet. <a target="_blank" rel="noopener" href={stimmeUrl}>Ganzer Beitrag auf GitHub</a>
+            modl00 aus einem Metallbaubetrieb, hat es per Docker auf einer Synology-NAS getestet. <a target="_blank" rel="noopener" href={stimmeUrl}>Ganzer Beitrag auf GitHub<span class="sr"> (öffnet neuen Tab)</span></a>
           </figcaption>
         </figure>
         <p class="press reveal d3">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d={icon.play}></path></svg>
-          <span>Zu Gast im ERP-Podcast „Der ERP Checker“, Mai 2026: <a target="_blank" rel="noopener" href={podcastUrl}>Folge auf YouTube ansehen</a> (43 Min.)</span>
+          <span>Zu Gast im ERP-Podcast „Der ERP Checker“, Mai 2026: <a target="_blank" rel="noopener" href={podcastUrl}>Folge auf YouTube ansehen<span class="sr"> (öffnet neuen Tab)</span></a> (43 Min.)</span>
         </p>
       </div>
     </div>
@@ -707,72 +734,79 @@ const mehr = [
 
   <section class="section" id="einrichtung" aria-labelledby="einrichtung-titel">
     <div class="wrap">
-      <div class="section-head">
-        <p class="eyebrow reveal">Einrichtung</p>
-        <h2 id="einrichtung-titel" class="reveal">Ich richte es für Sie ein</h2>
-        <p class="reveal d1">
-          Ich installiere das Programm in Ihrem Betrieb und stelle es auf Ihre Abläufe ein. Sie arbeiten danach gleich damit, ohne sich vorher durch
-          Anleitungen zu lesen.
-        </p>
-      </div>
-
-      <ol class="steps">
-        <li class="reveal"><h3>Kennenlernen</h3><p>Ein kurzes Gespräch: Gewerk, Mitarbeiter, Abläufe und womit Sie heute arbeiten.</p></li>
-        <li class="reveal d1"><h3>Installieren</h3><p>Auf einem PC oder Server in Ihrem Büro, mit nächtlicher Sicherung. Updates holt sich das Programm nachts selbst und springt bei Problemen auf die alte Version zurück.</p></li>
-        <li class="reveal d2"><h3>Einrichten</h3><p>Firmendaten, Briefpapier, Mitarbeiter und Postfächer. Ihre Daten aus dem alten Programm übernehme ich innerhalb einer Woche.</p></li>
-        <li class="reveal d3"><h3>Loslegen</h3><p>Einweisung fürs Büro und die Handy-App für Ihre Leute. Danach erreichen Sie mich per Telefon und E-Mail.</p></li>
-      </ol>
-
-      <div class="setup-list reveal">
-        <div>
-          <h3>Was ich für Sie einstelle</h3>
-          <p>
-            Individuell nach Ihrem Betrieb. Meist dauert die Einrichtung 3 bis 4 Tage, ich rechne 50 € pro Stunde ab, ohne Umsatzsteuer
-            (Kleinunternehmer nach § 19 UStG). Nach dem Gespräch bekommen Sie ein Angebot. Das Programm selbst kostet nichts.
+      <div class="flow-layout">
+        <div class="section-head flow-head">
+          <h2 id="einrichtung-titel" class="reveal">Ich richte es für Sie ein</h2>
+          <p class="reveal d1">
+            Ich installiere das Programm in Ihrem Betrieb und stelle es auf Ihre Abläufe ein. Sie arbeiten danach gleich damit, ohne sich vorher durch
+            Anleitungen zu lesen.
           </p>
-          <a class="btn btn-rose" href={anfrageMail}>Einrichtung anfragen</a>
         </div>
-        <ul>
-          <li>Übernahme Ihrer Daten aus dem alten Programm</li>
-          <li>Firmendaten und Briefpapier</li>
-          <li>Mitarbeiter, Rechte und Abteilungen</li>
-          <li>Handy-App per QR-Code</li>
-          <li>E-Mail-Postfächer und Signaturen</li>
-          <li>Leistungskatalog und Textvorlagen</li>
-          <li>Arbeitszeiten, Feiertage, Urlaub</li>
-          <li>Zahlungsfristen und Mahnstufen</li>
-          <li>Gemeinsamer Ordner für Zeichnungen</li>
-          <li>Sicherung auf Festplatte und OneDrive</li>
-          <li>Zugriff von unterwegs</li>
-        </ul>
+
+        <ol class="flow" data-flow role="list">
+          {
+            ablauf.map((schritt) => (
+              <li class="reveal">
+                <span class="flow-dot" aria-hidden="true" />
+                <span class="flow-track" aria-hidden="true">
+                  <span class="flow-fill" />
+                </span>
+                <h3>{schritt.t}</h3>
+                <p>{schritt.d}</p>
+              </li>
+            ))
+          }
+        </ol>
       </div>
 
-      <p class="tip reveal">
-        <strong>Tipp:</strong> Am einfachsten ist der Umstieg zum Jahresanfang. Dann starten Arbeitszeiten und Urlaubskonten frisch im neuen
-        Programm. Unterm Jahr geht es auch, braucht aber etwas mehr Abstimmung.
-      </p>
+      <div class="setup">
+        <div class="setup-intro">
+          <h3 class="reveal">Was ich für Sie einstelle</h3>
+          <p class="setup-price reveal d1">Meist 3 bis 4 Tage, zu 50 € pro Stunde. Das Programm selbst kostet nichts.</p>
+          <p class="reveal d1">
+            Individuell nach Ihrem Betrieb. Nach dem Gespräch bekommen Sie ein Angebot. Ohne Umsatzsteuer, als Kleinunternehmer nach § 19 UStG.
+          </p>
+          <p class="setup-tip reveal d2">
+            <strong>Tipp:</strong> Am einfachsten ist der Umstieg zum Jahresanfang. Dann starten Arbeitszeiten und Urlaubskonten frisch im neuen
+            Programm. Unterm Jahr geht es auch, braucht aber etwas mehr Abstimmung.
+          </p>
+        </div>
+        <ul class="setup-items checks reveal d1" role="list">
+          {
+            einstellungen.map((e) => (
+              <li>
+                <Check />
+                {e}
+              </li>
+            ))
+          }
+        </ul>
+        <div class="cta reveal d2"><a class="btn btn-rose" href={anfrageMail}>Einrichtung anfragen</a></div>
+      </div>
 
       <p class="diy reveal">
-        Wer selbst installieren will: Die <a target="_blank" rel="noopener" href={`${GITHUB_URL}/blob/main/deployment/docker-server/EINRICHTEN.md`}>Installationsanleitung</a> liegt auf GitHub.
+        Wer selbst installieren will: Die <a target="_blank" rel="noopener" href={`${GITHUB_URL}/blob/main/deployment/docker-server/EINRICHTEN.md`}>Installationsanleitung<span class="sr"> (öffnet neuen Tab)</span></a> liegt auf GitHub.
       </p>
     </div>
   </section>
 
   <section class="section" id="fragen" aria-labelledby="fragen-titel">
     <div class="wrap">
-      <div class="section-head center">
-        <p class="eyebrow reveal">Fragen</p>
-        <h2 id="fragen-titel" class="reveal">Häufige Fragen</h2>
-      </div>
-      <div class="faq reveal d1">
-        {
-          faqs.map((f) => (
-            <details>
-              <summary>{f.q}</summary>
-              <p>{f.a}</p>
-            </details>
-          ))
-        }
+      <div class="flow-layout">
+        <div class="section-head flow-head">
+          <h2 id="fragen-titel" class="reveal">Häufige Fragen</h2>
+          <p class="reveal d1">Ihre Frage ist nicht dabei? <a href={anfrageMail}>Schreiben Sie mir</a>, ich antworte persönlich.</p>
+        </div>
+        <div class="faq reveal d1">
+          {
+            faqs.map((f) => (
+              <details>
+                <summary>{f.q}</summary>
+                <p>{f.a}</p>
+              </details>
+            ))
+          }
+        </div>
       </div>
     </div>
   </section>
@@ -798,11 +832,11 @@ const mehr = [
             ></path></svg
           >
           Quellcode auf GitHub
-        </a>
+        <span class="sr"> (öffnet neuen Tab)</span></a>
         <a target="_blank" rel="noopener" class="btn btn-light btn-l li" href={LINKEDIN_URL}>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d={icon.linkedin}></path></svg>
           LinkedIn
-        </a>
+        <span class="sr"> (öffnet neuen Tab)</span></a>
       </div>
       <p class="mail reveal d3">
         <a href={mailto()}>{EMAIL}</a>
@@ -819,4 +853,5 @@ const mehr = [
 
 <script>
   import '../scripts/reveal.js';
+  import '../scripts/ablauf.js';
 </script>

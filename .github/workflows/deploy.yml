@@ -3,6 +3,9 @@ name: Website veröffentlichen
 on:
   push:
     branches: [main]
+  # Täglich neu bauen, damit die Versionszeile die neueste Programmversion zeigt.
+  schedule:
+    - cron: '17 4 * * *'
   workflow_dispatch:
 
 permissions:
@@ -25,6 +28,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
       # Bricht ab, solange im Impressum Pflichtangaben fehlen.
       - run: npm run check
       - uses: actions/upload-pages-artifact@v3

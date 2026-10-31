@@ -3,16 +3,20 @@ import Base from '../layouts/Base.astro';
 import MacBook from '../components/MacBook.astro';
 import Phone from '../components/Phone.astro';
 import Telefon from '../components/Telefon.astro';
-import { ANBIETER, EMAIL, GITHUB_URL, absoluteUrl, mailto, url } from '../site';
+import { ANBIETER, EMAIL, GITHUB_URL, absoluteUrl, letztesRelease, mailto, url } from '../site';
 
 const title = 'Kostenlose Handwerkersoftware – Open Source, mit E-Rechnung';
 const description =
   'Angebote, Rechnungen mit E-Rechnung, Zeiterfassung per Handy, Nachkalkulation. Kostenlos und Open Source, aus dem Metallbau. Einrichtung auf Wunsch.';
 
+const release = await letztesRelease();
+const releaseDatum = release?.datum.toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Berlin' });
+const releaseIso = release?.datum.toISOString().slice(0, 10);
+
 const faqs = [
   {
-    q: 'Was ist das Handwerkerprogramm?',
-    a: 'Eine kostenlose Handwerkersoftware mit offenem Quellcode, also ein ERP-System für Handwerksbetriebe. Angebote, Rechnungen mit E-Rechnung, Projekte mit Nachkalkulation, Zeiterfassung und Bautagebuch per Handy laufen in einem Programm. Entstanden ist es im Metallbaubetrieb meiner Familie mit sechs Mitarbeitern, dort läuft es seit einem Jahr jeden Tag.',
+    q: 'Gibt es kostenlose Handwerkersoftware ohne Abo?',
+    a: 'Ja. Das Handwerkerprogramm ist eine Handwerkersoftware mit offenem Quellcode (Lizenz AGPL v3), also ein ERP-System für Handwerksbetriebe, und kostet nichts, auch nicht pro Mitarbeiter. Es deckt den Ablauf von der Anfrage bis zur bezahlten Rechnung ab: Angebote und Rechnungen mit E-Rechnung nach EN 16931 (ZUGFeRD, XRechnung), Zeiterfassung per Handy auch ohne Netz, Bautagebuch und Nachkalkulation je Projekt. Es läuft auf einem Windows-PC oder Linux-Server in Ihrem Büro, Ihre Daten bleiben also im Betrieb. Entstanden ist es im Metallbaubetrieb meiner Familie mit sechs Mitarbeitern, dort läuft es seit einem Jahr jeden Tag.',
   },
   {
     q: 'Was kostet das Programm?',
@@ -79,12 +83,8 @@ const jsonLd = {
       '@id': person,
       name: 'Marvin Kuhn',
       jobTitle: 'Metallbaumeister',
-      hasCredential: {
-        '@type': 'EducationalOccupationalCredential',
-        credentialCategory: 'Meisterbrief',
-        name: 'Metallbauermeister',
-      },
-      knowsAbout: ['Metallbau', 'EN 1090', 'E-Rechnung', 'Handwerkersoftware', 'Wirtschaftsinformatik'],
+      hasCredential: { '@type': 'EducationalOccupationalCredential', credentialCategory: 'Meisterbrief', name: 'Metallbaumeister' },
+      knowsAbout: ['Metallbau', 'EN 1090', 'Handwerkersoftware', 'E-Rechnung', 'Wirtschaftsinformatik'],
       image: absoluteUrl('img/marvin-kuhn.webp'),
       address: { '@type': 'PostalAddress', addressLocality: 'Würzburg', addressRegion: 'Bayern', addressCountry: 'DE' },
       sameAs: ['https://github.com/Winfo2024Kuhn'],
@@ -104,6 +104,8 @@ const jsonLd = {
       isAccessibleForFree: true,
       url: home,
       downloadUrl: GITHUB_URL,
+      sameAs: [GITHUB_URL],
+      ...(release && { softwareVersion: release.version, dateModified: releaseIso, releaseNotes: release.url }),
       image: absoluteUrl('img/og-bild.jpg'),
       screenshot: absoluteUrl('img/projekt-nachkalkulation.webp'),
       featureList: [
@@ -118,6 +120,26 @@ const jsonLd = {
       ],
       author: { '@id': person },
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+    },
+    {
+      '@type': 'SoftwareSourceCode',
+      '@id': `${home}#quellcode`,
+      name: 'Handwerkerprogramm',
+      codeRepository: GITHUB_URL,
+      programmingLanguage: ['Java', 'TypeScript'],
+      license: 'https://www.gnu.org/licenses/agpl-3.0.html',
+      author: { '@id': person },
+      targetProduct: { '@id': software },
+    },
+    {
+      '@type': 'VideoObject',
+      name: 'Rundgang durch die Handy-App des Handwerkerprogramms',
+      description: 'Ein Mitarbeiter stempelt in der Handy-App auf ein Projekt. Alle Namen und Zahlen sind Demo-Daten.',
+      contentUrl: absoluteUrl('img/rundgang-mobil.mp4'),
+      thumbnailUrl: absoluteUrl('img/rundgang-mobil-poster-400.webp'),
+      uploadDate: '2026-10-31T01:46:31+01:00',
+      duration: 'PT20S',
+      isPartOf: { '@id': `${home}#webpage` },
     },
     {
       '@type': 'Service',
@@ -253,13 +275,20 @@ const mehr = [
     <div class="wrap">
       <h1 id="titel">Kostenlose Software für Ihren Handwerksbetrieb</h1>
       <p class="lead">
-        Angebote, Rechnungen mit E-Rechnung, Zeiterfassung per Handy und Nachkalkulation in einer Handwerkersoftware. Ich bin Metallbaumeister,
-        habe es für den Betrieb meiner Familie gebaut und richte es auf Wunsch bei Ihnen ein.
+        Das Handwerkerprogramm ist Open Source und vereint Angebote, Rechnungen mit E-Rechnung, Zeiterfassung per Handy und Nachkalkulation in
+        einer Handwerkersoftware. Ich bin Metallbaumeister, habe es für den Betrieb meiner Familie gebaut und richte es auf Wunsch bei Ihnen ein.
       </p>
       <div class="hero-actions">
         <a class="btn btn-rose btn-l" href={anfrageMail}>Einrichtung anfragen</a>
         <a class="btn btn-light btn-l" href="#funktionen">So sieht es aus</a>
       </div>
+      {
+        release && (
+          <p class="version">
+            Aktuelle Version {release.version} vom <time datetime={releaseIso}>{releaseDatum}</time> · <a href={release.url}>Was neu ist</a>
+          </p>
+        )
+      }
     </div>
 
     <figure class="shot">

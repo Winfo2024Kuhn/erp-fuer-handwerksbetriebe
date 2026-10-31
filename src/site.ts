@@ -16,6 +16,33 @@ export const absoluteUrl = (path = '') => new URL(url(path), import.meta.env.SIT
 export const mailto = (subject?: string) =>
   `mailto:${EMAIL}` + (subject ? `?subject=${encodeURIComponent(subject)}` : '');
 
+export interface Release {
+  version: string;
+  datum: Date;
+  url: string;
+}
+
+/**
+ * Neueste Version des Programms, beim Bauen der Seite von GitHub abgefragt.
+ * Ohne Antwort kommt `null` zurück, dann fehlt die Versionszeile, statt eine veraltete Zahl zu zeigen.
+ */
+export async function letztesRelease(): Promise<Release | null> {
+  const repo = GITHUB_URL.replace('https://github.com/', '');
+  const token = process.env.GITHUB_TOKEN;
+  try {
+    const res = await fetch(`https://api.github.com/repos/${repo}/releases/latest`, {
+      headers: { Accept: 'application/vnd.github+json', ...(token && { Authorization: `Bearer ${token}` }) },
+      signal: AbortSignal.timeout(10_000),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const r = await res.json();
+    return { version: String(r.tag_name).replace(/^v/, ''), datum: new Date(r.published_at), url: r.html_url };
+  } catch (e) {
+    console.warn(`Neueste Version nicht abrufbar (${e}), die Versionszeile entfällt.`);
+    return null;
+  }
+}
+
 /**
  * Angaben für Impressum und Datenschutzerklärung (§ 5 DDG, Art. 13 DSGVO).
  * Solange hier `null` steht, zeigt die Seite einen gelben Platzhalter und

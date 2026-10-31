@@ -26,7 +26,7 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
-      lastmod: new Date(),
+      // Kein lastmod: Das Baudatum wäre bei jedem Bauen neu, auch ohne geänderten Inhalt.
       filter: (page) => !page.includes('impressum') && !page.includes('datenschutz'),
     }),
   ],

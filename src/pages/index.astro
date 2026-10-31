@@ -1,0 +1,714 @@
+---
+import Base from '../layouts/Base.astro';
+import MacBook from '../components/MacBook.astro';
+import Phone from '../components/Phone.astro';
+import Telefon from '../components/Telefon.astro';
+import { ANBIETER, EMAIL, GITHUB_URL, absoluteUrl, mailto, url } from '../site';
+
+const title = 'Kostenlose Handwerkersoftware – Open Source, mit E-Rechnung';
+const description =
+  'Angebote, Rechnungen inkl. E-Rechnung, Zeiterfassung per Handy und Nachkalkulation. Kostenlos und Open Source, entstanden im Metallbau. Einrichtung auf Wunsch.';
+
+const faqs = [
+  {
+    q: 'Was kostet das Programm?',
+    a: 'Nichts. Das Programm ist Open Source und kostenlos, ohne Abo und ohne Gebühr pro Mitarbeiter. Geld kostet nur die Einrichtung, wenn ich sie für Sie übernehme. Dafür bekommen Sie vorher ein Angebot.',
+  },
+  {
+    q: 'Wo liegen meine Daten?',
+    a: 'Auf einem Rechner in Ihrem Betrieb, zum Beispiel einem Büro-PC. Ihre Daten liegen nicht bei einem Software-Anbieter. Jede Nacht sichert das Programm alles auf eine externe Festplatte und in Ihr OneDrive mit Geschäftskonto. Nur wenn Sie die freiwilligen KI-Funktionen einschalten, gehen Belege und Texte zum Auslesen an Google.',
+  },
+  {
+    q: 'Kann ich meine Daten aus dem alten Programm mitnehmen?',
+    a: 'Ja. Kunden, Lieferanten, Artikel und weitere Stammdaten übernehme ich innerhalb einer Woche aus Ihrem bisherigen Programm. Am einfachsten ist der Umstieg zum Jahresanfang, weil Arbeitszeiten und Urlaubskonten dann frisch starten. Unterm Jahr geht es auch, braucht aber etwas mehr Abstimmung.',
+  },
+  {
+    q: 'Was ist, wenn Sie einmal keine Zeit mehr haben?',
+    a: 'Das Programm läuft auf Ihrem Rechner weiter, auch ohne mich. Der Quellcode ist öffentlich, und Ihre Daten liegen in einer gewöhnlichen Datenbank in Ihrem Betrieb. Jeder IT-Dienstleister kann die Betreuung übernehmen.',
+  },
+  {
+    q: 'Für welche Gewerke passt es?',
+    a: 'Gebaut wurde es im Metallbau, es passt aber zu den meisten Gewerken: Schlosserei, Schreinerei, Elektro, Sanitär und Heizung. Die Abläufe von der Anfrage bis zur Schlussrechnung sind fast überall gleich. Was bei Ihnen anders läuft, klären wir vorher.',
+  },
+  {
+    q: 'Unterstützt das Programm die EN 1090?',
+    a: 'Zum Teil. Werkstoffzeugnisse Ihrer Lieferanten (3.1, 3.2 und 2.2 nach EN 10204) erkennt das Programm mit Werkstoff und Charge und hängt sie an den Lieferschein. Jedes Projekt hat einen eigenen Ordner für die 1090-Dokumentation. Weitere Bausteine sind in Planung, Ihre Anmerkungen dazu sind ausdrücklich erwünscht.',
+  },
+  {
+    q: 'Auf welchem Rechner läuft es?',
+    a: 'Auf einem Windows-PC oder Linux-Server, der im Büro läuft. Gearbeitet wird im Browser, also an jedem Rechner im Betrieb. Die Handy-App läuft im Browser von iPhone und Android.',
+  },
+  {
+    q: 'Kann das Programm E-Rechnungen?',
+    a: 'Ja. Rechnungen gehen als ZUGFeRD oder XRechnung nach EN 16931 raus, und E-Rechnungen von Lieferanten werden automatisch eingelesen.',
+  },
+  {
+    q: 'Brauche ich dafür KI?',
+    a: 'Nein. Die KI-Funktionen sind freiwillig und ohne Schlüssel komplett aus. E-Rechnungen von Lieferanten lesen sich dann weiter von selbst ein, normale PDF-Rechnungen tragen Sie von Hand ein.',
+  },
+  {
+    q: 'Kann ich es auch selbst installieren?',
+    a: 'Ja. Die Schritt-für-Schritt-Anleitung liegt auf GitHub. Unter Windows startet die Einrichtung per Doppelklick und installiert fehlende Teile mit. Sicherung und Handy-Zugang richten Sie danach nach Checkliste ein. Etwas PC-Erfahrung sollten Sie mitbringen.',
+  },
+];
+
+const home = absoluteUrl();
+const person = `${home}#marvin`;
+const software = `${home}#software`;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': 'WebSite', '@id': `${home}#website`, url: home, name: 'Handwerkerprogramm', inLanguage: 'de-DE' },
+    {
+      '@type': 'WebPage',
+      '@id': `${home}#webpage`,
+      url: home,
+      name: title,
+      isPartOf: { '@id': `${home}#website` },
+      about: { '@id': software },
+      author: { '@id': person },
+      inLanguage: 'de-DE',
+    },
+    {
+      '@type': 'Person',
+      '@id': person,
+      name: 'Marvin Kuhn',
+      jobTitle: 'Metallbaumeister',
+      image: absoluteUrl('img/marvin-kuhn.webp'),
+      address: { '@type': 'PostalAddress', addressLocality: 'Würzburg', addressRegion: 'Bayern', addressCountry: 'DE' },
+      sameAs: ['https://github.com/Winfo2024Kuhn'],
+    },
+    {
+      '@type': 'SoftwareApplication',
+      '@id': software,
+      name: 'Handwerkerprogramm',
+      description:
+        'Kostenlose Open-Source-Software für Handwerksbetriebe: Angebote, Rechnungen mit E-Rechnung (ZUGFeRD, XRechnung), Projekte mit Nachkalkulation, Bautagebuch und Zeiterfassung per Handy, gemeinsamer Ordner für Zeichnungen.',
+      applicationCategory: 'BusinessApplication',
+      applicationSubCategory: 'Handwerkersoftware',
+      operatingSystem: 'Windows, Linux (Docker)',
+      inLanguage: 'de-DE',
+      license: 'https://www.gnu.org/licenses/agpl-3.0.html',
+      isAccessibleForFree: true,
+      url: home,
+      downloadUrl: GITHUB_URL,
+      image: absoluteUrl('img/og-bild.png'),
+      screenshot: absoluteUrl('img/projekt-nachkalkulation.webp'),
+      featureList: [
+        'Angebote und Rechnungen',
+        'E-Rechnung ZUGFeRD/XRechnung (EN 16931)',
+        'Nachkalkulation je Projekt',
+        'Bautagebuch mit Fotos vom Handy',
+        'Zeiterfassung per Handy, auch ohne Netz',
+        'Gemeinsamer Ordner für Excel-, HiCAD- und Tenado-Dateien',
+        'Kalender mit Erinnerungen',
+        'DATEV-Export für die Lohnabrechnung',
+      ],
+      author: { '@id': person },
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+    },
+    {
+      '@type': 'Service',
+      name: 'Installation und Einrichtung des Handwerkerprogramms',
+      serviceType: 'Installation und Einrichtung von Handwerkersoftware',
+      provider: { '@id': person },
+      areaServed: [
+        { '@type': 'City', name: 'Würzburg' },
+        { '@type': 'AdministrativeArea', name: 'Unterfranken' },
+        { '@type': 'Country', name: 'Deutschland' },
+      ],
+      audience: { '@type': 'BusinessAudience', audienceType: 'Handwerksbetriebe, Metallbau, Schlossereien' },
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+    },
+  ],
+};
+
+const heroSrc = url('img/projekt-nachkalkulation.webp');
+const heroSrcset = `${url('img/projekt-nachkalkulation-900.webp')} 900w, ${heroSrc} 1600w`;
+const anfrageMail = mailto('Anfrage: Einrichtung Handwerkerprogramm');
+const normMail = mailto('Anmerkung zur EN 1090 im Handwerkerprogramm');
+
+// Dateiansicht wie im PC-Programm (Reiter „Dateien“), nur Demo-Namen
+const ordner = [
+  { name: 'Bilder', anzahl: 13 },
+  { name: 'Geschäftsdokumente', anzahl: 8 },
+];
+const dateien = [
+  { logo: 'datei-excel', name: 'Stückliste Geländer.xlsx', info: '14.10.2026 · Lena Probe' },
+  { logo: 'datei-hicad', name: 'BALKON 2.OG.SZA', info: '12.10.2026 · Jonas Beispiel' },
+  { logo: 'datei-pdf', name: 'Statik Balkon.pdf', info: '9.10.2026' },
+  { logo: 'datei-tenado', name: 'Treppe Werkplan.tcd', info: '7.10.2026 · Lena Probe' },
+  { logo: 'datei-excel', name: 'Kalkulation.xlsx', info: '28.9.2026 · Jonas Beispiel' },
+  { logo: 'datei-pdf', name: 'Architektenplan.pdf', info: '20.9.2026' },
+];
+
+// Nachgebaute Projektansicht wie im PC-Programm, nur Demo-Daten (keine echten Kunden)
+const projekt = {
+  titel: 'Zaun und Hoftor',
+  kunde: 'Familie Mustermann',
+  adresse: 'Musterweg 1, 12345 Beispielstadt',
+  nummer: '2026/10/00012',
+  kennzahlen: [
+    { name: 'Brutto', wert: '14.172,90 €' },
+    { name: 'Netto', wert: '11.910,00 €' },
+    { name: 'Arbeitskosten', wert: '4.680,00 €' },
+    { name: 'Material', wert: '3.215,40 €' },
+    { name: 'Gewinn', wert: '4.014,60 €', gut: true },
+  ],
+  reiter: ['Zeiten (24)', 'Material (3)', 'E-Mails (5)', 'Geschäftsdokumente (2)', 'Dateien (4)', 'Tagebuch (3)'],
+  gruppe: { name: 'mit Blechfüllung', stunden: '72.00 h', euro: '4.680,00 €' },
+  arbeitsgaenge: [
+    {
+      name: 'Fertigung',
+      stunden: '38.00 h',
+      euro: '2.470,00 €',
+      leute: [
+        { name: 'Jonas Beispiel', stunden: '22.00 h', euro: '1.430,00 €' },
+        { name: 'Lena Probe', stunden: '16.00 h', euro: '1.040,00 €' },
+      ],
+    },
+    {
+      name: 'Montage',
+      stunden: '24.00 h',
+      euro: '1.560,00 €',
+      leute: [
+        { name: 'Jonas Beispiel', stunden: '12.00 h', euro: '780,00 €' },
+        { name: 'Lena Probe', stunden: '12.00 h', euro: '780,00 €' },
+      ],
+    },
+    { name: 'Planung', stunden: '6.00 h', euro: '390,00 €', leute: [] },
+  ],
+};
+
+// Einträge wie im echten Bautagebuch der Handy-App, mit Demo-Namen und ohne Kundendaten
+const eintraege = [
+  {
+    wer: 'Jonas Beispiel',
+    wann: '30.10.2026 11:47',
+    privat: true,
+    text: ['Schlüssel nicht gleichschließend.', 'Außen Zylinder mit Aufbohrschutz.', 'Schnepper für E-Öffner mitbestellen.'],
+    fotos: 0,
+  },
+  { wer: 'Lena Probe', wann: '01.10.2026 09:49', privat: false, text: ['Drückergarnitur nach Besprechung.'], fotos: 2 },
+  { wer: 'Paul Platzhalter', wann: '30.09.2026 15:42', privat: false, text: ['Aufmaß am 30.09.26.'], fotos: 0 },
+];
+
+// Lucide-Symbole (gleiche Symbole wie in der App)
+const icon = {
+  zurueck: 'M19 12H5M12 19l-7-7 7-7',
+  nachricht: 'M7.9 20A9 9 0 1 0 4 16.1L2 22Z',
+  plus: 'M5 12h14M12 5v14',
+  person: 'M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z',
+  schloss: 'M5 11h14v10H5zM7 11V7a5 5 0 0 1 10 0v4',
+  stift: 'M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z',
+  muell: 'M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2',
+  kamera: 'M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3ZM12 10a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z',
+  bild: 'M3 3h18v18H3zM21 15l-5-5L5 21M9 7a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z',
+  koffer: 'M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16M2 6h20v14H2z',
+  ort: 'M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0ZM12 7a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z',
+  dokument: 'M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7ZM14 2v5h5M16 13H8M16 17H8',
+  uhr: 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20ZM12 6v6l4 2',
+  ordner: 'M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z',
+  hammer: 'M15 12l-8.4 8.4a2.1 2.1 0 1 1-3-3L12 9M17.6 15 22 10.6M20.9 11.6l-1.3-1.3a2.1 2.1 0 0 1 0-3l-.9-.9a2.1 2.1 0 0 0-3 0L13 9.2',
+};
+
+const mehr = [
+  { t: 'Kalender', d: 'Montagen, Aufmaße und Kundentermine für alle, mit Urlaub und Feiertagen. Erinnerung aufs Handy einen Tag und eine Stunde vorher.' },
+  { t: 'Angebot per Link annehmen', d: 'Ihr Kunde bestätigt das Angebot mit einem Code aus der E-Mail. Projekt und Auftragsbestätigung entstehen von selbst.' },
+  { t: 'Anfragen von Ihrer Website', d: 'Mit Fotos und Nachricht direkt im Programm. Sie bekommen eine Nachricht aufs Handy.' },
+  { t: 'Lieferantenrechnungen aus dem Postfach', d: 'Werden eingelesen und dem Projekt zugeordnet. Das Material landet gleich in der Nachkalkulation.' },
+  { t: 'Mahnungen von selbst', d: 'Zahlungserinnerung, 1. und 2. Mahnung gehen auf Wunsch automatisch per E-Mail raus.' },
+  { t: 'Anrufe von der FRITZ!Box', d: 'Wer angerufen hat und was auf dem Anrufbeantworter ist, steht direkt beim Kunden.' },
+  { t: 'Belege abscannen', d: 'Lieferschein oder Quittung mit dem Handy abfotografieren, das Programm schneidet zu und macht ein PDF daraus.' },
+  { t: 'Urlaub per Handy beantragen', d: 'Ihre Leute stellen Urlaub und Abwesenheit in der App, Sie sehen alles im Kalender.' },
+];
+---
+
+<Base title={title} description={description} jsonLd={jsonLd}>
+  <link slot="head" rel="preload" as="image" fetchpriority="high" href={heroSrc} imagesrcset={heroSrcset} imagesizes="(max-width: 1120px) 92vw, 960px" />
+
+  <section class="hero" aria-labelledby="titel">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="wrap">
+      <h1 id="titel">Kostenlose Software für Ihren Handwerksbetrieb</h1>
+      <p class="lead">
+        Angebote, Rechnungen mit E-Rechnung, Zeiterfassung per Handy und Nachkalkulation in einem Programm. Ich bin Metallbaumeister,
+        habe es für den Betrieb meiner Familie gebaut und richte es auf Wunsch bei Ihnen ein.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-rose btn-l" href={anfrageMail}>Einrichtung anfragen</a>
+        <a class="btn btn-light btn-l" href="#funktionen">So sieht es aus</a>
+      </div>
+    </div>
+
+    <figure class="shot">
+      <div class="stage">
+        <MacBook
+          name="projekt-nachkalkulation"
+          eager
+          sizes="(max-width: 1120px) 92vw, 960px"
+          alt="Projekt „Neubau Wohnanlage“ im Handwerkerprogramm: Brutto, Netto, Arbeitskosten, Material und Gewinn oben, darunter die Stunden je Arbeitsgang und Mitarbeiter"
+        />
+        <Phone class="stage-phone" label="Kurzer Rundgang durch die Handy-App: ein Mitarbeiter stempelt auf ein Projekt" />
+      </div>
+      <figcaption>Projekt mit laufender Nachkalkulation am PC, Zeiterfassung auf dem Handy. Alle Namen und Zahlen sind Demo-Daten.</figcaption>
+    </figure>
+  </section>
+
+  <section class="facts" aria-label="Das Wichtigste in Kürze">
+    <div class="wrap">
+      <ul>
+        <li class="reveal"><strong>Kostenlos</strong><span>Kein Abo, keine Gebühr pro Mitarbeiter.</span></li>
+        <li class="reveal" style="--i:1"><strong>Ihre Daten bleiben im Betrieb</strong><span>Läuft auf einem Rechner in Ihrem Büro, nicht bei einem Software-Anbieter.</span></li>
+        <li class="reveal" style="--i:2"><strong>E-Rechnung inklusive</strong><span>Schreibt und liest E-Rechnungen (ZUGFeRD, XRechnung).</span></li>
+        <li class="reveal" style="--i:3"><strong>Offener Quellcode</strong><span>Jeder kann nachsehen, was das Programm macht. Es läuft auch ohne mich weiter.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="funktionen" aria-labelledby="funktionen-titel">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow reveal">Funktionen</p>
+        <h2 id="funktionen-titel" class="reveal">Von der Anfrage bis zur bezahlten Rechnung</h2>
+        <p class="reveal" style="--i:1">Ein Programm für Büro, Werkstatt und Baustelle. Knöpfe und Listen heißen so, wie man in der Werkstatt redet.</p>
+      </div>
+
+      <article class="feature wide">
+        <div class="feature-text">
+          <h3 class="reveal">Live sehen, was ein Auftrag einbringt</h3>
+          <p class="reveal" style="--i:1">
+            Gebuchte Stunden, Material und zugeordnete Lieferantenrechnungen landen sofort beim Projekt. So sehen Sie den Gewinn, während der
+            Auftrag noch läuft, und merken früh, wenn er aus dem Ruder läuft. Die Stunden sehen Sie nach Arbeitsgang und Mitarbeiter, und aus
+            abgeschlossenen Aufträgen errechnet das Programm Vorgabezeiten für die nächste Kalkulation.
+          </p>
+        </div>
+        <figure class="pane steel reveal" style="--i:1">
+          <div
+            class="app"
+            data-ui
+            role="img"
+            aria-label="Projekt „Zaun und Hoftor“ im PC-Programm: Netto 11.910 Euro, Arbeitskosten 4.680 Euro, Material 3.215,40 Euro, Gewinn 4.014,60 Euro; darunter die Stunden je Arbeitsgang und Mitarbeiter (Demo-Daten)">
+            <div class="app-head">
+              <svg class="app-back" viewBox="0 0 24 24" aria-hidden="true"><path d={icon.zurueck}></path></svg>
+              <span class="app-tile"><svg viewBox="0 0 24 24" aria-hidden="true"><path d={icon.koffer}></path></svg></span>
+              <div class="app-info">
+                <div class="app-title"><strong>{projekt.titel}</strong><span class="app-badge">Offen</span></div>
+                <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d={icon.person}></path></svg>{projekt.kunde}</span>
+                <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d={icon.ort}></path></svg>{projekt.adresse}</span>
+                <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d={icon.dokument}></path></svg>{projekt.nummer}</span>
+              </div>
+              <dl class="app-kpis">
+                {
+                  projekt.kennzahlen.map((k) => (
+                    <div class:list={{ gut: k.gut }}>
+                      <dt>{k.name}</dt>
+                      <dd>{k.wert}</dd>
+                    </div>
+                  ))
+                }
+              </dl>
+            </div>
+            <div class="app-tabs">
+              {projekt.reiter.map((r, i) => <span class:list={{ aktiv: i === 0 }}>{r}</span>)}
+            </div>
+            <div class="app-group">
+              <div class="app-row app-row-group">
+                <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d={icon.ordner}></path></svg>{projekt.gruppe.name}</span>
+                <b>{projekt.gruppe.stunden}</b><em>{projekt.gruppe.euro}</em>
+              </div>
+              {
+                projekt.arbeitsgaenge.map((g) => (
+                  <div class="app-step">
+                    <div class="app-row">
+                      <span>
+                        <svg class="app-hammer" viewBox="0 0 24 24" aria-hidden="true">
+                          <path d={icon.hammer} />
+                        </svg>
+                        {g.name}
+                      </span>
+                      <b>{g.stunden}</b>
+                      <em>{g.euro}</em>
+                    </div>
+                    {g.leute.map((m) => (
+                      <div class="app-row app-row-person">
+                        <span>
+                          <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d={icon.person} />
+                          </svg>
+                          {m.name}
+                        </span>
+                        <b>{m.stunden}</b>
+                        <em>{m.euro}</em>
+                      </div>
+                    ))}
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+          <figcaption>Nachgebaut aus dem PC-Programm, mit Demo-Daten</figcaption>
+        </figure>
+      </article>
+
+      <article class="feature flip">
+        <div class="feature-text">
+          <h3 class="reveal">Bautagebuch vom Handy aus</h3>
+          <p class="reveal" style="--i:1">
+            Fotos von der Baustelle, Fortschritt, Mängel: Ihre Leute halten alles mit dem Handy im Tagebuch des Projekts fest. Das Büro sieht es
+            sofort, und bei Rückfragen vom Kunden ist alles mit Datum belegt.
+          </p>
+          <ul class="reveal" style="--i:2">
+            <li>Fotos direkt mit der Handykamera oder aus der Galerie</li>
+            <li>Einträge auch per Spracheingabe (mit den freiwilligen KI-Funktionen)</li>
+            <li>Fotos aus Website-Anfragen landen gleich mit im Tagebuch</li>
+          </ul>
+        </div>
+        <figure class="pane warm phone-pane single reveal" style="--i:1">
+          <Phone label="Tagebuch eines Projekts in der Handy-App mit Einträgen und Fotos (vereinfachte Darstellung)">
+            <div class="tb" data-ui>
+              <div class="tb-head">
+                <svg class="tb-ico" viewBox="0 0 24 24" aria-hidden="true"><path d={icon.zurueck}></path></svg>
+                <span class="tb-tile"><svg viewBox="0 0 24 24" aria-hidden="true"><path d={icon.nachricht}></path></svg></span>
+                <div class="tb-title">
+                  <strong>Bau Tagebuch</strong>
+                  <small>3 Einträge</small>
+                </div>
+                <span class="tb-add"><svg viewBox="0 0 24 24" aria-hidden="true"><path d={icon.plus}></path></svg></span>
+              </div>
+              <ul class="tb-list">
+                {
+                  eintraege.map((e) => (
+                    <li>
+                      <span class="tb-avatar">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path d={icon.person} />
+                        </svg>
+                      </span>
+                      <div class="tb-body">
+                        <div class="tb-meta">
+                          <b>{e.wer}</b>
+                          <small>{e.wann}</small>
+                          {e.privat && (
+                            <svg class="tb-lock" viewBox="0 0 24 24" aria-hidden="true">
+                              <path d={icon.schloss} />
+                            </svg>
+                          )}
+                        </div>
+                        {e.text.map((zeile) => (
+                          <p>{zeile}</p>
+                        ))}
+                        {e.fotos > 0 && (
+                          <span class="tb-fotos">
+                            {Array.from({ length: e.fotos }).map(() => (
+                              <i>
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                  <path d={icon.bild} />
+                                </svg>
+                              </i>
+                            ))}
+                          </span>
+                        )}
+                        <span class="tb-actions">
+                          <span>
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                              <path d={icon.kamera} />
+                            </svg>
+                            Kamera
+                          </span>
+                          <span>
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                              <path d={icon.bild} />
+                            </svg>
+                            Galerie
+                          </span>
+                        </span>
+                      </div>
+                      <span class="tb-tools">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path d={icon.stift} />
+                        </svg>
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path d={icon.muell} />
+                        </svg>
+                      </span>
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+          </Phone>
+          <figcaption>Nachgebaut aus der Handy-App, mit Demo-Daten</figcaption>
+        </figure>
+      </article>
+
+      <article class="feature">
+        <div class="feature-text">
+          <h3 class="reveal">Ein Ordner für alle Zeichnungen</h3>
+          <p class="reveal" style="--i:1">
+            Excel-Tabellen, HiCAD- und Tenado-Zeichnungen liegen in einem gemeinsamen Ordner auf dem Rechner im Büro. Aus dem Projekt öffnen Sie
+            jede Datei mit einem Klick im passenden Programm. Keine USB-Sticks, keine Kopien per E-Mail und kein fremder Cloud-Anbieter.
+          </p>
+          <ul class="reveal" style="--i:2">
+            <li>Öffnet per Klick in Excel, HiCAD oder Tenado, unter Windows und Mac</li>
+            <li>Für alle im Betrieb gleich, auf Wunsch auch von unterwegs</li>
+            <li>Jede Nacht mitgesichert</li>
+          </ul>
+        </div>
+        <div class="pane steel reveal" style="--i:1">
+          <div class="files" data-ui role="img" aria-label="Reiter Dateien eines Projekts: Ordner für Bilder, Geschäftsdokumente und Planungsdokumente mit Excel-, HiCAD-, Tenado- und PDF-Dateien (Demo-Daten)">
+            {
+              ordner.map((o) => (
+                <div class="files-folder">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="m9 18 6-6-6-6" />
+                  </svg>
+                  <svg class="files-folder-ico" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d={icon.ordner} />
+                  </svg>
+                  <b>{o.name}</b>
+                  <small>({o.anzahl})</small>
+                </div>
+              ))
+            }
+            <div class="files-folder offen">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+              <svg class="files-folder-ico" viewBox="0 0 24 24" aria-hidden="true"><path d={icon.ordner}></path></svg>
+              <b>Planungsdokumente</b>
+              <small>({dateien.length})</small>
+            </div>
+            <ul class="files-grid">
+              {
+                dateien.map((d) => (
+                  <li>
+                    <span class="files-thumb">
+                      <img src={url(`img/${d.logo}.webp`)} alt="" width="56" height="56" loading="lazy" />
+                    </span>
+                    <b>{d.name}</b>
+                    <small>{d.info}</small>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+          <p class="pane-note">Nachgebaut aus dem PC-Programm, mit Demo-Daten</p>
+        </div>
+      </article>
+
+      <article class="feature flip">
+        <div class="feature-text">
+          <h3 class="reveal">Zeiterfassung per Handy, auch ohne Netz</h3>
+          <p class="reveal" style="--i:1">
+            Ihre Leute stempeln auf der Baustelle direkt auf Projekt und Arbeitsgang. Ohne Empfang speichert das Handy und gleicht später ab, es geht
+            keine Stunde verloren.
+          </p>
+          <ul class="reveal" style="--i:2">
+            <li>Läuft auf iPhone und Android</li>
+            <li>Urlaub, Krankheit und Stundenkonto</li>
+            <li>Monatsabschluss und Export für die Lohnabrechnung (DATEV)</li>
+          </ul>
+        </div>
+        <div class="pane phone-pane straw reveal" style="--i:1">
+          <Phone image="handy-2" label="Handy-App: Projekt auswählen, mit Suche und Liste der laufenden Projekte" />
+          <Phone image="handy-3" class="phone-offset" label="Handy-App: Saldenauswertung mit Urlaubstagen, Soll- und Ist-Stunden und Gesamtsaldo" />
+        </div>
+      </article>
+
+      <article class="feature">
+        <div class="feature-text">
+          <h3 class="reveal">Angebote und Rechnungen, mit E-Rechnung</h3>
+          <p class="reveal" style="--i:1">Leistungen aus Ihrem Katalog ziehen, Preise anpassen, daneben sehen Sie gleich das fertige PDF auf Ihrem Briefpapier.</p>
+          <ul class="reveal" style="--i:2">
+            <li>Angebot, Auftragsbestätigung, Abschlags- und Schlussrechnung</li>
+            <li>Leistungsverzeichnisse aus Ausschreibungen als GAEB-Datei einlesen</li>
+            <li>Sehen, wer noch nicht bezahlt hat, und mahnen</li>
+          </ul>
+        </div>
+        <div class="pane warm reveal" style="--i:1">
+          <MacBook name="dokumenteditor" alt="Dokumenteditor: links die Positionen eines Angebots, rechts die PDF-Vorschau" />
+        </div>
+      </article>
+
+      <article class="feature flip">
+        <div class="feature-text">
+          <h3 class="reveal">Das Jahr auf einen Blick</h3>
+          <p class="reveal" style="--i:1">
+            Umsatz, Kosten und Gewinn je Jahr und je Kunde, mit Vergleich zum Vorjahr. Daran sehen Sie, an welchen Kunden Sie gut verdienen und an
+            welchen kaum.
+          </p>
+        </div>
+        <div class="pane steel reveal" style="--i:1">
+          <MacBook name="erfolgsanalyse" alt="Erfolgsanalyse mit Umsatz, Kosten und Gewinn im Jahresvergleich" />
+        </div>
+      </article>
+
+      <div class="norm reveal">
+        <div>
+          <h3>EN 1090 im Metallbau</h3>
+          <p>
+            Für Betriebe, die Stahl- und Aluminiumtragwerke nach EN 1090 fertigen, ist ein Teil der Dokumentation schon im Programm. Weitere
+            Bausteine sind in Planung. Was Sie bei der 1090-Dokumentation am meisten Zeit kostet, interessiert mich: Ihre Anmerkungen fließen
+            direkt in die Entwicklung ein.
+          </p>
+          <a class="btn btn-light" href={normMail}>Anmerkung schreiben</a>
+        </div>
+        <div class="norm-lists">
+          <div>
+            <h4>Schon drin</h4>
+            <ul>
+              <li>Werkstoffzeugnisse 3.1, 3.2 und 2.2 nach EN 10204 aus dem Postfach erkennen, mit Werkstoff und Charge (mit den freiwilligen KI-Funktionen)</li>
+              <li>Zeugnis hängt am passenden Lieferschein und lässt sich über die Positionen wiederfinden</li>
+              <li>Eigener Ordner „Dokumentation 1090“ in jedem Projekt</li>
+            </ul>
+          </div>
+          <div>
+            <h4>In Planung</h4>
+            <p>Weitere Nachweise rund um die 1090-Dokumentation. Welche zuerst kommen, richte ich nach den Rückmeldungen aus den Betrieben.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="more reveal">
+        <h3>Außerdem dabei</h3>
+        <dl>
+          {
+            mehr.map((m) => (
+              <div>
+                <dt>{m.t}</dt>
+                <dd>{m.d}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="herkunft-titel">
+    <div class="wrap origin">
+      <div class="portrait reveal">
+        <img src={url('img/marvin-kuhn.webp')} width="640" height="800" loading="lazy" alt="Marvin Kuhn" />
+      </div>
+      <div>
+        <p class="eyebrow reveal">Wer dahinter steht</p>
+        <h2 id="herkunft-titel" class="reveal">Gebaut im eigenen Betrieb</h2>
+        <p class="statement reveal" style="--i:1">
+          Das Programm ist im Metallbaubetrieb meiner Familie entstanden und läuft dort jeden Tag. Ich bin Metallbaumeister, studiere
+          Wirtschaftsinformatik und entwickle es aus der Praxis weiter.
+        </p>
+        <p class="sig reveal" style="--i:2"><strong>Marvin Kuhn</strong>, Metallbaumeister aus Würzburg</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="einrichtung" aria-labelledby="einrichtung-titel">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow reveal">Einrichtung</p>
+        <h2 id="einrichtung-titel" class="reveal">Ich richte es für Sie ein</h2>
+        <p class="reveal" style="--i:1">
+          Ich installiere das Programm in Ihrem Betrieb und stelle es auf Ihre Abläufe ein. Sie arbeiten danach gleich damit, ohne sich vorher durch
+          Anleitungen zu lesen.
+        </p>
+      </div>
+
+      <ol class="steps">
+        <li class="reveal"><h3>Kennenlernen</h3><p>Ein kurzes Gespräch: Gewerk, Mitarbeiter, Abläufe und womit Sie heute arbeiten.</p></li>
+        <li class="reveal" style="--i:1"><h3>Installieren</h3><p>Auf einem PC oder Server in Ihrem Büro, mit nächtlicher Sicherung und automatischen Updates.</p></li>
+        <li class="reveal" style="--i:2"><h3>Einrichten</h3><p>Firmendaten, Briefpapier, Mitarbeiter und Postfächer. Ihre Daten aus dem alten Programm übernehme ich innerhalb einer Woche.</p></li>
+        <li class="reveal" style="--i:3"><h3>Loslegen</h3><p>Einweisung fürs Büro und die Handy-App für Ihre Leute. Danach erreichen Sie mich per Telefon und E-Mail.</p></li>
+      </ol>
+
+      <div class="setup-list reveal">
+        <div>
+          <h3>Was ich für Sie einstelle</h3>
+          <p>Individuell nach Ihrem Betrieb. Sie bekommen nach dem Gespräch ein Angebot für die Einrichtung. Das Programm selbst kostet nichts.</p>
+          <a class="btn btn-rose" href={anfrageMail}>Einrichtung anfragen</a>
+        </div>
+        <ul>
+          <li>Übernahme Ihrer Daten aus dem alten Programm</li>
+          <li>Firmendaten und Briefpapier</li>
+          <li>Mitarbeiter, Rechte und Abteilungen</li>
+          <li>Handy-App per QR-Code</li>
+          <li>E-Mail-Postfächer und Signaturen</li>
+          <li>Leistungskatalog und Textvorlagen</li>
+          <li>Arbeitszeiten, Feiertage, Urlaub</li>
+          <li>Zahlungsfristen und Mahnstufen</li>
+          <li>Gemeinsamer Ordner für Zeichnungen</li>
+          <li>Sicherung auf Festplatte und OneDrive</li>
+          <li>Zugriff von unterwegs</li>
+        </ul>
+      </div>
+
+      <p class="tip reveal">
+        <strong>Tipp:</strong> Am einfachsten ist der Umstieg zum Jahresanfang. Dann starten Arbeitszeiten und Urlaubskonten frisch im neuen
+        Programm. Unterm Jahr geht es auch, braucht aber etwas mehr Abstimmung.
+      </p>
+
+      <p class="diy reveal">
+        Wer selbst installieren will: Die <a href={`${GITHUB_URL}/blob/main/deployment/docker-server/EINRICHTEN.md`}>Installationsanleitung</a> liegt auf GitHub.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" id="fragen" aria-labelledby="fragen-titel">
+    <div class="wrap">
+      <div class="section-head center">
+        <p class="eyebrow reveal">Fragen</p>
+        <h2 id="fragen-titel" class="reveal">Häufige Fragen</h2>
+      </div>
+      <div class="faq reveal" style="--i:1">
+        {
+          faqs.map((f) => (
+            <details>
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="final" id="kontakt" aria-labelledby="kontakt-titel">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="wrap">
+      <h2 id="kontakt-titel" class="reveal">Reden wir über Ihren Betrieb</h2>
+      <p class="reveal" style="--i:1">
+        Schreiben Sie mir, wie Sie heute arbeiten und was Sie stört. Ich melde mich, und wir schauen gemeinsam, ob das Programm zu Ihnen passt.
+      </p>
+      <div class="actions reveal" style="--i:2">
+        <a class="btn btn-rose btn-l" href={anfrageMail}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+            ><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m3 7 9 6 9-6"></path></svg
+          >
+          E-Mail schreiben
+        </a>
+        <a class="btn btn-light btn-l" href={GITHUB_URL}>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
+            ><path
+              d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.15-1.11-1.46-1.11-1.46-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"
+            ></path></svg
+          >
+          Quellcode auf GitHub
+        </a>
+      </div>
+      <p class="mail reveal" style="--i:3">
+        <a href={mailto()}>{EMAIL}</a>
+        {ANBIETER.telefonVerschluesselt && (
+          <>
+            {' · '}
+            <Telefon />
+          </>
+        )}
+      </p>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import '../scripts/reveal.js';
+</script>

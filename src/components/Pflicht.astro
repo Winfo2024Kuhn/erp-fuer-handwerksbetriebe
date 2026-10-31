@@ -1,0 +1,11 @@
+---
+// Zeigt eine Pflichtangabe aus ANBIETER oder einen gut sichtbaren Platzhalter.
+// Der Platzhalter trägt data-pflicht-offen, daran erkennt `npm run check` ihn.
+interface Props {
+  value: string | null;
+  label: string;
+}
+const { value, label } = Astro.props;
+---
+
+{value ? value : <span class="todo" data-pflicht-offen>{label} fehlt</span>}

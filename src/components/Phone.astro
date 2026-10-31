@@ -1,0 +1,40 @@
+---
+// Handy-App im iPhone-Rahmen (nur CSS).
+// Mit `image` ein Bildschirmfoto, mit Inhalt im Slot eine nachgebaute Ansicht, sonst das kurze Rundgang-Video.
+import { url } from '../site';
+
+interface Props {
+  image?: string; // Dateiname ohne Endung in public/img
+  label: string;
+  class?: string;
+}
+
+const { image, label, class: className = '' } = Astro.props;
+const hasSlot = Astro.slots.has('default');
+---
+
+<div class:list={['phone', className]}>
+  <div class="phone-screen">
+    {
+      image ? (
+        <img src={url(`img/${image}.webp`)} width="600" height="1296" loading="lazy" alt={label} />
+      ) : hasSlot ? (
+        <div class="phone-ui" role="img" aria-label={label}>
+          <slot />
+        </div>
+      ) : (
+        <video
+          src={url('img/rundgang-mobil.mp4')}
+          poster={url('img/rundgang-mobil-poster-400.webp')}
+          width="780"
+          height="1688"
+          muted
+          playsinline
+          preload="none"
+          aria-label={label}
+        />
+      )
+    }
+    <span class="phone-island" aria-hidden="true"></span>
+  </div>
+</div>

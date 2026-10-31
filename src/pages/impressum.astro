@@ -1,0 +1,51 @@
+---
+import Base from '../layouts/Base.astro';
+import Pflicht from '../components/Pflicht.astro';
+import Telefon from '../components/Telefon.astro';
+import { ANBIETER, EMAIL, mailto } from '../site';
+---
+
+<Base title="Impressum – Handwerkerprogramm" description="Impressum und Kontakt für die Website des Handwerkerprogramms." path="impressum" noindex>
+  <article class="wrap legal">
+    <h1>Impressum</h1>
+
+    <h2>Angaben gemäß §&nbsp;5 DDG</h2>
+    <p>
+      {ANBIETER.name}<br />
+      <Pflicht value={ANBIETER.strasse} label="Straße und Hausnummer" /><br />
+      <Pflicht value={ANBIETER.ort} label="Postleitzahl und Ort" /><br />
+      Deutschland
+    </p>
+
+    <h2>Kontakt</h2>
+    <p>
+      Telefon: <Telefon /><br />
+      E-Mail: <a href={mailto()}>{EMAIL}</a>
+    </p>
+
+    {(ANBIETER.ustId || ANBIETER.wIdNr) && (
+      <>
+        <h2>Steuernummern</h2>
+        <p>
+          {ANBIETER.ustId && <>Umsatzsteuer-Identifikationsnummer gemäß §&nbsp;27a UStG: {ANBIETER.ustId}<br /></>}
+          {ANBIETER.wIdNr && <>Wirtschafts-Identifikationsnummer gemäß §&nbsp;139c AO: {ANBIETER.wIdNr}</>}
+        </p>
+      </>
+    )}
+
+    <h2>Verbraucherstreitbeilegung</h2>
+    <p>Ich bin nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+
+    <h2>Haftung für Links</h2>
+    <p>
+      Diese Seite verlinkt auf GitHub. Für die Inhalte dort ist der jeweilige Anbieter verantwortlich. Zum Zeitpunkt der Verlinkung
+      waren keine Rechtsverstöße erkennbar. Werden mir Rechtsverletzungen bekannt, entferne ich den Link umgehend.
+    </p>
+
+    <h2>Software</h2>
+    <p>
+      Das Handwerkerprogramm ist freie Software unter der GNU Affero General Public License v3. Es wird ohne Gewährleistung
+      bereitgestellt, soweit gesetzlich zulässig. Für Installation und Einrichtung gelten die im Einzelfall vereinbarten Bedingungen.
+    </p>
+  </article>
+</Base>

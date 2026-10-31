@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://winfo2024kuhn.github.io/erp-fuer-handwerksbetriebe/sitemap-index.xml

@@ -1,0 +1,95 @@
+---
+// Grundgerüst jeder Seite: Kopf mit SEO-Angaben, Kopfzeile, Fußzeile.
+// Datenschutz: keine fremden Schriften, kein Tracking, keine Cookies.
+import '../styles/global.css';
+import { GITHUB_URL, SITE_NAME, absoluteUrl, url } from '../site';
+
+interface Props {
+  title: string;
+  description: string;
+  path?: string;
+  noindex?: boolean;
+  jsonLd?: object;
+}
+
+const { title, description, path = '', noindex = false, jsonLd } = Astro.props;
+const canonical = absoluteUrl(path);
+const ogImage = absoluteUrl('img/og-bild.png');
+const isHome = path === '';
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
+    <meta name="theme-color" content="#f8fafc" />
+    <meta name="author" content="Marvin Kuhn" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="de_DE" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Projektansicht im Handwerkerprogramm mit laufender Nachkalkulation" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" type="image/png" sizes="64x64" href={url('img/favicon-64.png')} />
+    <link rel="apple-touch-icon" href={url('img/apple-touch-icon.png')} />
+    <link rel="sitemap" href={url('sitemap-index.xml')} />
+    <slot name="head" />
+
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body>
+    <a class="skip" href="#inhalt">Zum Inhalt springen</a>
+
+    <header class="top">
+      <div class="wrap">
+        <a class="brand" href={url()} aria-label="Handwerkerprogramm, zur Startseite">
+          <img src={url('img/logo.webp')} alt="" width="30" height="30" />
+          Handwerkerprogramm
+        </a>
+        <nav aria-label="Hauptnavigation">
+          <a href={isHome ? '#funktionen' : url('#funktionen')}>Funktionen</a>
+          <a href={isHome ? '#einrichtung' : url('#einrichtung')}>Einrichtung</a>
+          <a href={isHome ? '#fragen' : url('#fragen')}>Fragen</a>
+          <a class="keep" href={GITHUB_URL}>GitHub</a>
+        </nav>
+        <a class="btn btn-rose" href={isHome ? '#kontakt' : url('#kontakt')}>Kontakt</a>
+      </div>
+    </header>
+
+    <main id="inhalt">
+      <slot />
+    </main>
+
+    <footer class="foot">
+      <div class="wrap">
+        <a class="brand" href={url()}>
+          <img src={url('img/logo.webp')} alt="" width="30" height="30" loading="lazy" />
+          Handwerkerprogramm
+        </a>
+        <nav aria-label="Rechtliches und Links">
+          <a href={GITHUB_URL}>GitHub</a>
+          <a href={`${GITHUB_URL}/blob/main/LICENSE`}>Lizenz (AGPL v3)</a>
+          <a href={url('impressum')}>Impressum</a>
+          <a href={url('datenschutz')}>Datenschutz</a>
+        </nav>
+      </div>
+    </footer>
+    <script>
+      import '../scripts/telefon.js';
+    </script>
+  </body>
+</html>

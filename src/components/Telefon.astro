@@ -1,0 +1,33 @@
+---
+// Telefonnummer, die Bots nicht einfach abgreifen können:
+// - im HTML stehen zwischen den Ziffern unsichtbare Störziffern (Text-Auslesen ergibt eine falsche Nummer),
+// - die richtige Nummer liegt nur verschlüsselt im data-Attribut,
+// - im Browser macht src/scripts/telefon.js daraus einen normalen, anklickbaren tel:-Link.
+// Fehlt die Nummer in src/site.ts, erscheint der Pflicht-Platzhalter (und `npm run check` bricht ab).
+import Pflicht from './Pflicht.astro';
+import { ANBIETER, telefonKlartext } from '../site';
+
+const nummer = telefonKlartext();
+const teile: { echt: string; falsch?: string }[] = [];
+if (nummer) {
+  const stuecke = nummer.match(/.{1,2}/g) ?? [];
+  stuecke.forEach((stueck, i) => {
+    teile.push({ echt: stueck, falsch: i < stuecke.length - 1 ? String((i * 37 + 13) % 100).padStart(2, '0') : undefined });
+  });
+}
+---
+
+{
+  nummer ? (
+    <span class="tel-schutz" data-t={ANBIETER.telefonVerschluesselt}>
+      {teile.map((t) => (
+        <>
+          {t.echt}
+          {t.falsch && <i class="tel-x" aria-hidden="true">{t.falsch}</i>}
+        </>
+      ))}
+    </span>
+  ) : (
+    <Pflicht value={null} label="Telefonnummer" />
+  )
+}

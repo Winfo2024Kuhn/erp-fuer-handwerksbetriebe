@@ -4,7 +4,7 @@
 import { url } from '../site';
 
 interface Props {
-  image?: string; // Dateiname ohne Endung in public/img
+  image?: string; // Dateiname ohne Endung in public/img, es gibt jeweils -400.webp und .webp
   label: string;
   class?: string;
 }
@@ -17,7 +17,15 @@ const hasSlot = Astro.slots.has('default');
   <div class="phone-screen">
     {
       image ? (
-        <img src={url(`img/${image}.webp`)} width="600" height="1296" loading="lazy" alt={label} />
+        <img
+          src={url(`img/${image}.webp`)}
+          srcset={`${url(`img/${image}-400.webp`)} 400w, ${url(`img/${image}.webp`)} 600w`}
+          sizes="(max-width: 560px) 36vw, 205px"
+          width="600"
+          height="1296"
+          loading="lazy"
+          alt={label}
+        />
       ) : hasSlot ? (
         <div class="phone-ui" role="img" aria-label={label}>
           <slot />

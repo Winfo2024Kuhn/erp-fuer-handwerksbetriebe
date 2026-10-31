@@ -1,0 +1,13 @@
+---
+// Eigene Fehlerseite. GitHub Pages liefert sie bei unbekannten Adressen mit Status 404 aus.
+import Base from '../layouts/Base.astro';
+import { url } from '../site';
+---
+
+<Base title="Seite nicht gefunden – Handwerkerprogramm" description="Diese Seite gibt es nicht. Zurück zur Startseite des Handwerkerprogramms." path="404" noindex>
+  <article class="wrap legal">
+    <h1>Seite nicht gefunden</h1>
+    <p>Unter dieser Adresse gibt es keine Seite. Vielleicht hat sich ein Tippfehler eingeschlichen, oder der Link ist veraltet.</p>
+    <p><a class="btn btn-rose" href={url()}>Zur Startseite</a></p>
+  </article>
+</Base>

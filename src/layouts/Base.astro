@@ -14,7 +14,7 @@ interface Props {
 
 const { title, description, path = '', noindex = false, jsonLd } = Astro.props;
 const canonical = absoluteUrl(path);
-const ogImage = absoluteUrl('img/og-bild.png');
+const ogImage = absoluteUrl('img/og-bild.jpg');
 const isHome = path === '';
 ---
 
@@ -38,13 +38,24 @@ const isHome = path === '';
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:secure_url" content={ogImage} />
+    <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Projektansicht im Handwerkerprogramm mit laufender Nachkalkulation" />
+    <meta property="og:image:alt" content="Handwerkerprogramm: kostenlose Software für Handwerksbetriebe, daneben die Projektansicht mit Nachkalkulation" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content="Handwerkerprogramm: kostenlose Software für Handwerksbetriebe" />
+    <meta name="application-name" content={SITE_NAME} />
+    <meta name="apple-mobile-web-app-title" content={SITE_NAME} />
 
-    <link rel="icon" type="image/png" sizes="64x64" href={url('img/favicon-64.png')} />
-    <link rel="apple-touch-icon" href={url('img/apple-touch-icon.png')} />
+    <link rel="icon" href={url('favicon.ico')} sizes="48x48" />
+    <link rel="icon" type="image/png" sizes="96x96" href={url('img/favicon-96.png')} />
+    <link rel="icon" type="image/png" sizes="192x192" href={url('img/icon-192.png')} />
+    <link rel="apple-touch-icon" sizes="180x180" href={url('img/apple-touch-icon.png')} />
+    <link rel="manifest" href={url('site.webmanifest')} />
     <link rel="sitemap" href={url('sitemap-index.xml')} />
     <slot name="head" />
 

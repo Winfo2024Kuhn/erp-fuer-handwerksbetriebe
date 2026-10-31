@@ -16,7 +16,7 @@ const faqs = [
   },
   {
     q: 'Was kostet das Programm?',
-    a: 'Nichts. Das Programm ist Open Source und kostenlos, ohne Abo und ohne Gebühr pro Mitarbeiter. Geld kostet nur die Einrichtung, wenn ich sie für Sie übernehme: 50 € pro Stunde, meist 3 bis 4 Tage, also rund 1.200 bis 1.600 €. Dafür bekommen Sie vorher ein Angebot.',
+    a: 'Nichts. Das Programm ist Open Source und kostenlos, ohne Abo und ohne Gebühr pro Mitarbeiter. Geld kostet nur die Einrichtung, wenn ich sie für Sie übernehme: 50 € pro Stunde, meist 3 bis 4 Tage, also rund 1.200 bis 1.600 €, jeweils zzgl. MwSt. Dafür bekommen Sie vorher ein Angebot.',
   },
   {
     q: 'Wo liegen meine Daten?',
@@ -132,7 +132,7 @@ const jsonLd = {
       audience: { '@type': 'BusinessAudience', audienceType: 'Handwerksbetriebe, Metallbau, Schlossereien' },
       offers: {
         '@type': 'Offer',
-        priceSpecification: { '@type': 'UnitPriceSpecification', price: '50', priceCurrency: 'EUR', unitCode: 'HUR', unitText: 'Stunde' },
+        priceSpecification: { '@type': 'UnitPriceSpecification', price: '50', priceCurrency: 'EUR', unitCode: 'HUR', unitText: 'Stunde', valueAddedTaxIncluded: false },
       },
     },
     {
@@ -665,7 +665,7 @@ const mehr = [
         <div>
           <h3>Was ich für Sie einstelle</h3>
           <p>
-            Individuell nach Ihrem Betrieb. Meist dauert die Einrichtung 3 bis 4 Tage, ich rechne 50 € pro Stunde ab. Nach dem Gespräch bekommen
+            Individuell nach Ihrem Betrieb. Meist dauert die Einrichtung 3 bis 4 Tage, ich rechne 50 € pro Stunde zzgl. MwSt. ab. Nach dem Gespräch bekommen
             Sie ein Angebot. Das Programm selbst kostet nichts.
           </p>
           <a class="btn btn-rose" href={anfrageMail}>Einrichtung anfragen</a>

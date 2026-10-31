@@ -2,7 +2,7 @@
 // Grundgerüst jeder Seite: Kopf mit SEO-Angaben, Kopfzeile, Fußzeile.
 // Datenschutz: keine fremden Schriften, kein Tracking, keine Cookies.
 import '../styles/global.css';
-import { GITHUB_URL, SITE_NAME, absoluteUrl, url } from '../site';
+import { GITHUB_URL, LINKEDIN_URL, SITE_NAME, absoluteUrl, url } from '../site';
 
 interface Props {
   title: string;
@@ -93,6 +93,7 @@ const isHome = path === '';
         </a>
         <nav aria-label="Rechtliches und Links">
           <a href={GITHUB_URL}>GitHub</a>
+          <a href={LINKEDIN_URL}>LinkedIn</a>
           <a href={`${GITHUB_URL}/blob/main/LICENSE`}>Lizenz (AGPL v3)</a>
           <a href={url('impressum')}>Impressum</a>
           <a href={url('datenschutz')}>Datenschutz</a>

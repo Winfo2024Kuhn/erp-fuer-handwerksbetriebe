@@ -759,6 +759,25 @@ p {
   color: var(--ink);
 }
 
+.origin .sig a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink);
+  font-weight: 600;
+  text-underline-offset: 3px;
+}
+
+.origin .sig svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* LinkedIn-Logo einfarbig schwarz */
+.li svg {
+  fill: #000;
+}
+
 .voice {
   margin: 32px 0 0;
   max-width: 52ch;
@@ -784,6 +803,29 @@ p {
 }
 
 .voice a {
+  font-weight: 600;
+  text-underline-offset: 3px;
+}
+
+.press {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 24px 0 0;
+  max-width: 52ch;
+  color: var(--ink-2);
+  font-size: 15px;
+}
+
+.press svg {
+  width: 12px;
+  height: 12px;
+  flex: none;
+  fill: var(--rose);
+}
+
+.press a {
+  color: var(--ink);
   font-weight: 600;
   text-underline-offset: 3px;
 }

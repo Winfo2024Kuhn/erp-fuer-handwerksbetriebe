@@ -990,6 +990,78 @@ p {
   font-size: 16px;
 }
 
+/* Rentabilität: gleiche Aufteilung wie die Einrichtung, rechts eine offene Tabelle */
+.payback {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: clamp(40px, 7vw, 112px);
+  align-items: start;
+  margin-top: clamp(96px, 12vw, 160px);
+}
+
+.payback table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+}
+
+.payback th,
+.payback td {
+  padding: 16px 16px 16px 0;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.payback thead th {
+  padding-top: 6px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.payback th:last-child,
+.payback td:last-child {
+  padding-right: 0;
+  text-align: right;
+}
+
+.payback tbody th {
+  font-weight: 400;
+}
+
+.payback tbody th strong {
+  display: block;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.payback tbody th span {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.payback td {
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.payback td:last-child {
+  color: var(--rose-dark);
+  font-weight: 600;
+}
+
+.payback-note {
+  max-width: 62ch;
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
 .diy {
   margin-top: clamp(56px, 7vw, 88px);
   color: var(--ink-2);
@@ -1264,6 +1336,7 @@ p {
   .origin,
   .flow-layout,
   .setup,
+  .payback,
   .norm {
     grid-template-columns: 1fr;
   }
@@ -1317,6 +1390,34 @@ p {
   }
   .facts ul {
     gap: 24px;
+  }
+  .payback thead {
+    display: none;
+  }
+  .payback tr {
+    display: block;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .payback th,
+  .payback td,
+  .payback th:last-child,
+  .payback td:last-child {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 3px 0;
+    border: 0;
+    text-align: left;
+  }
+  .payback tbody th {
+    display: block;
+    padding-bottom: 8px;
+  }
+  .payback td::before {
+    content: attr(data-label);
+    color: var(--muted);
+    font-weight: 400;
   }
   .setup-items {
     grid-template-columns: 1fr;

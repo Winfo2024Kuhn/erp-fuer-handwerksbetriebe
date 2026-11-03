@@ -14,6 +14,18 @@ const release = await letztesRelease();
 const releaseDatum = release?.datum.toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Berlin' });
 const releaseIso = release?.datum.toISOString().slice(0, 10);
 
+// Wann sich die Einrichtung gegenüber Cloud-Software bezahlt macht. Cloud-Preise: Mittelwert aus HERO OS, plancraft Pro
+// (+ Plantafel) und Craftnote Büro Plus (+ Zeit-Modul), Listenpreise netto bei Jahresvertrag, Stand November 2026.
+const stundensatz = 80;
+const einrichtung = stundensatz * 8 * 5;
+const euro = (n: number) => `${n.toLocaleString('de-DE')}\u00a0€`;
+const rechnung = [
+  { leute: 3, buero: 1, draussen: 2, monat: 150 },
+  { leute: 6, buero: 2, draussen: 4, monat: 220 },
+  { leute: 12, buero: 3, draussen: 9, monat: 360 },
+].map((r) => ({ ...r, monate: Math.ceil(einrichtung / r.monat), gespart: r.monat * 60 - einrichtung }));
+const beispiel = rechnung[1];
+
 const faqs = [
   {
     q: 'Gibt es kostenlose Handwerkersoftware ohne Abo?',
@@ -21,7 +33,11 @@ const faqs = [
   },
   {
     q: 'Was kostet das Programm?',
-    a: 'Nichts. Das Programm ist Open Source und kostenlos, ohne Abo und ohne Gebühr pro Mitarbeiter. Geld kostet nur die Einrichtung, wenn ich sie für Sie übernehme: 50 € pro Stunde, meist 3 bis 4 Tage, also rund 1.200 bis 1.600 €. Als Kleinunternehmer nach § 19 UStG berechne ich keine Umsatzsteuer. Vorher bekommen Sie ein Angebot.',
+    a: 'Nichts. Das Programm ist Open Source und kostenlos, ohne Abo und ohne Gebühr pro Mitarbeiter. Geld kostet nur die Einrichtung, wenn ich sie für Sie übernehme: 80 € pro Stunde. Bis Stammdaten und Firmenformulare eingerichtet sind, Ihre Mitarbeiter geschult sind und das Programm einsatzbereit ist, dauert es meist 5 Tage, also rund 3.200 €, einmalig und ohne Abo. Anpassungen an Ihren Betrieb mache ich auf Wunsch zum selben Stundensatz. Die Anfahrt in der Region Würzburg ist enthalten. Als Kleinunternehmer nach § 19 UStG berechne ich keine Umsatzsteuer.',
+  },
+  {
+    q: 'Ab wann lohnt sich die Einrichtung?',
+    a: `Vergleichbare Cloud-Software kostet einen Betrieb mit ${beispiel.leute} Mitarbeitern rund ${euro(beispiel.monat)} im Monat, jedes Jahr wieder. Die Einrichtung zahlen Sie einmal, bei fünf Tagen rund ${euro(einrichtung)}. Nach etwa ${beispiel.monate} Monaten hat sie sich bezahlt gemacht, nach fünf Jahren bleiben rund ${euro(beispiel.gespart)} im Betrieb. Danach fallen keine Lizenzkosten an.`,
   },
   {
     q: 'Warum ist das Programm kostenlos?',
@@ -174,7 +190,7 @@ const jsonLd = {
       audience: { '@type': 'BusinessAudience', audienceType: 'Handwerksbetriebe, Metallbau, Schlossereien' },
       offers: {
         '@type': 'Offer',
-        priceSpecification: { '@type': 'UnitPriceSpecification', price: '50', priceCurrency: 'EUR', unitCode: 'HUR', unitText: 'Stunde' },
+        priceSpecification: { '@type': 'UnitPriceSpecification', price: '80', priceCurrency: 'EUR', unitCode: 'HUR', unitText: 'Stunde' },
       },
     },
     {
@@ -294,7 +310,7 @@ const ablauf = [
 
 const einstellungen = [
   'Übernahme Ihrer Daten aus dem alten Programm',
-  'Firmendaten und Briefpapier',
+  'Firmendaten, Briefpapier und Formulare',
   'Mitarbeiter, Rechte und Abteilungen',
   'Handy-App per QR-Code',
   'E-Mail-Postfächer und Signaturen',
@@ -762,9 +778,9 @@ const mehr = [
       <div class="setup">
         <div class="setup-intro">
           <h3 class="reveal">Was ich für Sie einstelle</h3>
-          <p class="setup-price reveal d1">Meist 3 bis 4 Tage, zu 50 € pro Stunde. Das Programm selbst kostet nichts.</p>
+          <p class="setup-price reveal d1">Meist 5 Tage, bis alles eingerichtet ist, Ihre Mitarbeiter geschult sind und das Programm läuft. 80 € pro Stunde, das Programm selbst kostet nichts.</p>
           <p class="reveal d1">
-            Individuell nach Ihrem Betrieb. Nach dem Gespräch bekommen Sie ein Angebot. Ohne Umsatzsteuer, als Kleinunternehmer nach § 19 UStG.
+            Auf Wunsch passe ich das Programm darüber hinaus an Ihren Betrieb an, zum selben Stundensatz. Die Anfahrt in der Region Würzburg ist enthalten, bei weiteren Wegen klären wir Fahrt und Übernachtung vorher. Ohne Umsatzsteuer, als Kleinunternehmer nach § 19 UStG.
           </p>
           <p class="setup-tip reveal d2">
             <strong>Tipp:</strong> Am einfachsten ist der Umstieg zum Jahresanfang. Dann starten Arbeitszeiten und Urlaubskonten frisch im neuen
@@ -782,6 +798,50 @@ const mehr = [
           }
         </ul>
         <div class="cta reveal d2"><a class="btn btn-rose" href={anfrageMail}>Einrichtung anfragen</a></div>
+      </div>
+
+      <div class="payback">
+        <div class="setup-intro">
+          <h3 class="reveal">Wann hat sich das bezahlt gemacht?</h3>
+          <p class="reveal d1">
+            Cloud-Software kostet jeden Monat, meist pro Mitarbeiter, und das jedes Jahr wieder. Die Einrichtung zahlen Sie einmal, bei fünf Tagen
+            rund {euro(einrichtung)}. Danach kostet das Programm nichts mehr.
+          </p>
+          <p class="setup-price reveal d1">Ein Betrieb mit {beispiel.leute} Leuten hat die Einrichtung nach {beispiel.monate} Monaten wieder drin.</p>
+        </div>
+        <div class="payback-table reveal d1">
+          <table>
+            <caption class="sr">Was vergleichbare Cloud-Software kostet und wann sich die Einrichtung bezahlt gemacht hat</caption>
+            <thead>
+              <tr>
+                <th scope="col">Betrieb</th>
+                <th scope="col">Cloud-Software</th>
+                <th scope="col">Bezahlt nach</th>
+                <th scope="col">Nach 5 Jahren gespart</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                rechnung.map((r) => (
+                  <tr>
+                    <th scope="row">
+                      <strong>{r.leute} Leute</strong>
+                      <span>{r.buero} im Büro, {r.draussen} draußen</span>
+                    </th>
+                    <td data-label="Cloud-Software">{euro(r.monat)} im Monat</td>
+                    <td data-label="Bezahlt nach">{r.monate} Monaten</td>
+                    <td data-label="Nach 5 Jahren gespart">{euro(r.gespart)}</td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+          <p class="payback-note">
+            Cloud-Software: Mittelwert der Listenpreise von drei bekannten Programmen für Handwerker mit Angebot, Rechnung, Zeiterfassung per App
+            und Plantafel, netto bei Jahresvertrag, Stand November 2026. Beim Handwerkerprogramm bleibt nur der Strom für den Büro-PC. Anpassungen
+            und Hilfe rechne ich nach Aufwand ab.
+          </p>
+        </div>
       </div>
 
       <p class="diy reveal">
